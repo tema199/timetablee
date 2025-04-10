@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الجدول الدراسي</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #dbeafe, #f0f9ff);
+      font-family: 'Tahoma', sans-serif;
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+    }
+    .box {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .box h1 {
+      font-size: 1.8rem;
+      color: #1e3a8a;
+      margin-bottom: 10px;
+    }
+    .box p {
+      font-size: 1.2rem;
+      color: #111827;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #fff;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #1e3a8a;
+      color: white;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    .current {
+      background-color: #fde68a;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="box">
+      <h1 id="lesson"></h1>
+      <p id="remaining"></p>
+      <p id="next-class"></p>
+    </div>
+    <div class="box">
+      <h1>جدول الحصص اليومي</h1>
+      <table id="schedule-table">
+        <thead>
+          <tr>
+            <th>الفترة</th>
+            <th>من</th>
+            <th>إلى</th>
+          </tr>
+        </thead>
+        <tbody id="schedule-body">
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const schedule = {
+      'Sunday': [
+        { name: 'الحصة الأولى', start: '07:00', end: '07:45' },
+        { name: 'الحصة الثانية', start: '07:45', end: '08:30' },
+        { name: 'الحصة الثالثة', start: '08:30', end: '09:15' },
+        { name: 'فسحة', start: '09:15', end: '09:45' },
+        { name: 'الحصة الرابعة', start: '09:45', end: '10:35' },
+        { name: 'الحصة الخامسة', start: '10:35', end: '11:25' },
+        { name: 'الحصة السادسة', start: '11:25', end: '12:15' }
+      ],
+      'Monday': [
+        { name: 'الحصة الأولى', start: '07:00', end: '07:45' },
+        { name: 'الحصة الثانية', start: '07:45', end: '08:30' },
+        { name: 'الحصة الثالثة', start: '08:30', end: '09:15' },
+        { name: 'فسحة', start: '09:15', end: '09:45' },
+        { name: 'الحصة الرابعة', start: '09:45', end: '10:30' },
+        { name: 'الحصة الخامسة', start: '10:30', end: '11:15' },
+        { name: 'الحصة السادسة', start: '11:15', end: '12:00' },
+        { name: 'الحصة السابعة', start: '12:00', end: '12:15' }
+      ]
+    };
+
+    schedule['Tuesday'] = schedule['Monday'];
+    schedule['Wednesday'] = schedule['Sunday'];
+    schedule['Thursday'] = schedule['Sunday'];
+
+    const myClasses = {
+      'Sunday': {
+        '07:00': 'شعبة ج',
+        '07:45': 'شعبة أ'
+      },
+      'Monday': {
+        '07:00': 'شعبة ج',
+        '08:30': 'ادارة اعمال',
+        '09:45': 'ثالث ثانوي',
+        '10:30': 'ثالث ثانوي'
+      },
+      'Tuesday': {
+        '07:00': 'شعبة ب',
+        '09:45': 'ادارة اعمال',
+        '10:30': 'ثالث ثانوي',
+        '11:15': 'شعبة أ'
+      },
+      'Wednesday': {
+        '07:45': 'شعبة أ',
+        '08:30': 'ادارة اعمال',
+        '09:45': 'شعبة ب'
+      },
+      'Thursday': {
+        '07:45': 'شعبة ب',
+        '11:25': 'شعبة ج'
+      }
+    };
+
+    function updateTime() {
+      const now = new Date();
+      const day = now.toLocaleDateString('en-US', { weekday: 'long' });
+      const currentTime = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+      const todaySchedule = schedule[day];
+
+      let currentPeriod = null;
+      let currentIndex = -1;
+      for (let i = 0; i < todaySchedule.length; i++) {
+        const period = todaySchedule[i];
+        if (currentTime >= period.start && currentTime < period.end) {
+          currentPeriod = period;
+          currentIndex = i;
+          break;
+        }
+      }
+
+      const lessonEl = document.getElementById('lesson');
+      const remainingEl = document.getElementById('remaining');
+      const nextClassEl = document.getElementById('next-class');
+
+      if (currentPeriod) {
+        const endTime = new Date();
+        const [endH, endM] = currentPeriod.end.split(':');
+        endTime.setHours(+endH);
+        endTime.setMinutes(+endM);
+        endTime.setSeconds(0);
+
+        const diffMs = endTime - now;
+        const diffMin = Math.floor(diffMs / 60000);
+        const diffSec = Math.floor((diffMs % 60000) / 1000);
+
+        lessonEl.textContent = `الآن ${currentPeriod.name}`;
+        remainingEl.textContent = `تنتهي بعد ${diffMin} دقيقة و ${diffSec} ثانية`;
+      } else {
+        lessonEl.textContent = 'لا توجد حصة الآن';
+        remainingEl.textContent = '';
+      }
+
+      // عرض الحصة القادمة الخاصة بك
+      const times = Object.keys(myClasses[day] || {}).sort();
+      let found = false;
+      for (let time of times) {
+        const [h, m] = time.split(':');
+        const classTime = new Date();
+        classTime.setHours(+h);
+        classTime.setMinutes(+m);
+        classTime.setSeconds(0);
+        if (classTime > now) {
+          const diffMin = Math.floor((classTime - now) / 60000);
+          nextClassEl.textContent = `حصتك القادمة: ${myClasses[day][time]} في ${time} (بعد ${diffMin} دقيقة)`;
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        nextClassEl.textContent = 'لا توجد حصص قادمة اليوم';
+      }
+
+      // تحديث الجدول
+      const tableBody = document.getElementById('schedule-body');
+      tableBody.innerHTML = '';
+      todaySchedule.forEach(period => {
+        const row = document.createElement('tr');
+        const isCurrent = currentTime >= period.start && currentTime < period.end;
+        row.className = isCurrent ? 'current' : '';
+        row.innerHTML = `
+          <td>${period.name}</td>
+          <td>${period.start}</td>
+          <td>${period.end}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    setInterval(updateTime, 1000);
+    updateTime();
+  </script>
+</body>
+</html>
