@@ -135,7 +135,7 @@
         const diffMin = Math.floor(diffMs / 60000);
         const diffSec = Math.floor((diffMs % 60000) / 1000);
 
-        lessonEl.textContent = `الحصة الحالية:  ${currentPeriod.name}`;
+        lessonEl.textContent = `الحصة الآن:  ${currentPeriod.name}`;
         remainingEl.textContent = `تنتهي بعد ${diffMin} دقيقة و ${diffSec} ثانية`;
       } else {
         lessonEl.textContent = 'لا توجد حصة الآن';
