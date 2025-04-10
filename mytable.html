@@ -54,7 +54,10 @@
       border-bottom: none;
     }
     .current {
-      background-color: #fde68a;
+      background-color: #fde68a !important;
+    }
+    .my-class {
+      background-color: #bbf7d0 !important;
     }
   </style>
 </head>
@@ -109,31 +112,11 @@
     schedule['Thursday'] = schedule['Sunday'];
 
     const myClasses = {
-      'Sunday': {
-        '07:00': 'شعبة ج',
-        '07:45': 'شعبة أ'
-      },
-      'Monday': {
-        '07:00': 'شعبة ج',
-        '08:30': 'ادارة اعمال',
-        '09:45': 'ثالث ثانوي',
-        '10:30': 'ثالث ثانوي'
-      },
-      'Tuesday': {
-        '07:00': 'شعبة ب',
-        '09:45': 'ادارة اعمال',
-        '10:30': 'ثالث ثانوي',
-        '11:15': 'شعبة أ'
-      },
-      'Wednesday': {
-        '07:45': 'شعبة أ',
-        '08:30': 'ادارة اعمال',
-        '09:45': 'شعبة ب'
-      },
-      'Thursday': {
-        '07:45': 'شعبة ب',
-        '11:25': 'شعبة ج'
-      }
+      'Sunday': ['الحصة الأولى', 'الحصة الثانية'],
+      'Monday': ['الحصة الأولى', 'الحصة الثالثة', 'الحصة الرابعة', 'الحصة الخامسة'],
+      'Tuesday': ['الحصة الأولى', 'الحصة الرابعة', 'الحصة الخامسة', 'الحصة السادسة'],
+      'Wednesday': ['الحصة الثانية', 'الحصة الثالثة', 'الحصة الرابعة'],
+      'Thursday': ['الحصة الثانية', 'الحصة السادسة']
     };
 
     function updateTime() {
@@ -141,15 +124,18 @@
       const day = now.toLocaleDateString('en-US', { weekday: 'long' });
       const currentTime = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
       const todaySchedule = schedule[day];
+      const todayMyClasses = myClasses[day] || [];
 
       let currentPeriod = null;
-      let currentIndex = -1;
+      let nextClass = null;
+
       for (let i = 0; i < todaySchedule.length; i++) {
         const period = todaySchedule[i];
         if (currentTime >= period.start && currentTime < period.end) {
           currentPeriod = period;
-          currentIndex = i;
-          break;
+        }
+        if (!nextClass && currentTime < period.start && todayMyClasses.includes(period.name)) {
+          nextClass = period;
         }
       }
 
@@ -175,33 +161,29 @@
         remainingEl.textContent = '';
       }
 
-      // عرض الحصة القادمة الخاصة بك
-      const times = Object.keys(myClasses[day] || {}).sort();
-      let found = false;
-      for (let time of times) {
-        const [h, m] = time.split(':');
-        const classTime = new Date();
-        classTime.setHours(+h);
-        classTime.setMinutes(+m);
-        classTime.setSeconds(0);
-        if (classTime > now) {
-          const diffMin = Math.floor((classTime - now) / 60000);
-          nextClassEl.textContent = `حصتك القادمة: ${myClasses[day][time]} في ${time} (بعد ${diffMin} دقيقة)`;
-          found = true;
-          break;
-        }
-      }
-      if (!found) {
-        nextClassEl.textContent = 'لا توجد حصص قادمة اليوم';
+      if (nextClass) {
+        const [startH, startM] = nextClass.start.split(':');
+        const startTime = new Date();
+        startTime.setHours(+startH);
+        startTime.setMinutes(+startM);
+        startTime.setSeconds(0);
+
+        const diffMs = startTime - now;
+        const diffMin = Math.floor(diffMs / 60000);
+        nextClassEl.textContent = `حصتك القادمة اليوم هي ${nextClass.name} وتبدأ بعد ${diffMin} دقيقة`;
+      } else {
+        nextClassEl.textContent = '';
       }
 
-      // تحديث الجدول
       const tableBody = document.getElementById('schedule-body');
       tableBody.innerHTML = '';
       todaySchedule.forEach(period => {
         const row = document.createElement('tr');
-        const isCurrent = currentTime >= period.start && currentTime < period.end;
-        row.className = isCurrent ? 'current' : '';
+        if (period.name === currentPeriod?.name) {
+          row.classList.add('current');
+        } else if (todayMyClasses.includes(period.name)) {
+          row.classList.add('my-class');
+        }
         row.innerHTML = `
           <td>${period.name}</td>
           <td>${period.start}</td>
