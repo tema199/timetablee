@@ -53,6 +53,9 @@
     tr:last-child td {
       border-bottom: none;
     }
+    .current {
+      background-color: #fde68a !important;
+    }
   </style>
 </head>
 <body>
@@ -139,11 +142,13 @@
         remainingEl.textContent = '';
       }
 
-      // تحديث الجدول
       const tableBody = document.getElementById('schedule-body');
       tableBody.innerHTML = '';
       todaySchedule.forEach(period => {
         const row = document.createElement('tr');
+        if (currentPeriod && period.name === currentPeriod.name) {
+          row.classList.add('current');
+        }
         row.innerHTML = `
           <td>${period.name}</td>
           <td>${period.start}</td>
