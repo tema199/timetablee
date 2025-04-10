@@ -170,7 +170,7 @@
 
         const diffMs = startTime - now;
         const diffMin = Math.floor(diffMs / 60000);
-        nextClassEl.textContent = `حصتك القادمة اليوم هي ${nextClass.name} وتبدأ بعد ${diffMin} دقيقة`;
+        nextClassEl.textContent = ` القادم : ${nextClass.name} بعد ${diffMin} دقيقة`;
       } else {
         nextClassEl.textContent = '';
       }
