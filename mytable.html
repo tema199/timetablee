@@ -59,6 +59,23 @@
     .my-class {
       background-color: #bbf7d0 !important;
     }
+    .class-info {
+      display: block;
+    }
+    .section {
+      color: #10b981;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+    #toggle-button {
+      padding: 8px 16px;
+      background-color: #1e3a8a;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
@@ -70,6 +87,7 @@
     </div>
     <div class="box">
       <h1>جدول الحصص اليومي</h1>
+      <button id="toggle-button">عرض حصصي فقط</button>
       <table id="schedule-table">
         <thead>
           <tr>
@@ -112,30 +130,60 @@
     schedule['Thursday'] = schedule['Sunday'];
 
     const myClasses = {
-      'Sunday': ['الحصة الأولى', 'الحصة الثانية'],
-      'Monday': ['الحصة الأولى', 'الحصة الثالثة', 'الحصة الرابعة', 'الحصة الخامسة'],
-      'Tuesday': ['الحصة الأولى', 'الحصة الرابعة', 'الحصة الخامسة', 'الحصة السادسة'],
-      'Wednesday': ['الحصة الثانية', 'الحصة الثالثة', 'الحصة الرابعة'],
-      'Thursday': ['الحصة الثانية', 'الحصة السادسة']
+      'Sunday': {
+        'الحصة الأولى': 'ج',
+        'الحصة الثانية': 'أ'
+      },
+      'Monday': {
+        'الحصة الأولى': 'ج',
+        'الحصة الثالثة': 'إدارة أعمال',
+        'الحصة الرابعة': 'ثالث ثانوي',
+        'الحصة الخامسة': 'ثالث ثانوي'
+      },
+      'Tuesday': {
+        'الحصة الأولى': 'ب',
+        'الحصة الرابعة': 'إدارة أعمال',
+        'الحصة الخامسة': 'ثالث ثانوي',
+        'الحصة السادسة': 'أ'
+      },
+      'Wednesday': {
+        'الحصة الثانية': 'أ',
+        'الحصة الثالثة': 'إدارة أعمال',
+        'الحصة الرابعة': 'ب'
+      },
+      'Thursday': {
+        'الحصة الثانية': 'ب',
+        'الحصة السادسة': 'ج'
+      }
     };
+
+    let showOnlyMyClasses = false;
+
+    document.getElementById('toggle-button').addEventListener('click', () => {
+      showOnlyMyClasses = !showOnlyMyClasses;
+      document.getElementById('toggle-button').textContent = showOnlyMyClasses ? 'عرض الجدول الكامل' : 'عرض حصصي فقط';
+      updateTime();
+    });
 
     function updateTime() {
       const now = new Date();
       const day = now.toLocaleDateString('en-US', { weekday: 'long' });
       const currentTime = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
       const todaySchedule = schedule[day];
-      const todayMyClasses = myClasses[day] || [];
+      const todayMyClasses = myClasses[day] || {};
 
       let currentPeriod = null;
       let nextClass = null;
+      let nextSection = '';
 
       for (let i = 0; i < todaySchedule.length; i++) {
         const period = todaySchedule[i];
         if (currentTime >= period.start && currentTime < period.end) {
           currentPeriod = period;
         }
-        if (!nextClass && currentTime < period.start && todayMyClasses.includes(period.name)) {
+        if (!nextClass && currentTime < period.start && todayMyClasses[period.name]) {
           nextClass = period;
+          nextSection = todayMyClasses[period.name];
         }
       }
 
@@ -170,22 +218,26 @@
 
         const diffMs = startTime - now;
         const diffMin = Math.floor(diffMs / 60000);
-        nextClassEl.textContent = ` القادم : ${nextClass.name} بعد ${diffMin} دقيقة`;
+        nextClassEl.innerHTML = ` القادم : ${nextClass.name}<span class="section"> (شعبة ${nextSection}) </span> وتبدأ بعد ${diffMin} دقيقة`;
       } else {
-        nextClassEl.textContent = '';
+        nextClassEl.textContent = 'لا توجد حصة قادمة اليوم';
       }
 
       const tableBody = document.getElementById('schedule-body');
       tableBody.innerHTML = '';
       todaySchedule.forEach(period => {
+        const isMyClass = todayMyClasses[period.name];
+        if (showOnlyMyClasses && !isMyClass) return;
+
         const row = document.createElement('tr');
         if (period.name === currentPeriod?.name) {
           row.classList.add('current');
-        } else if (todayMyClasses.includes(period.name)) {
+        } else if (isMyClass) {
           row.classList.add('my-class');
         }
+        const section = isMyClass ? `<span class="section">شعبة ${todayMyClasses[period.name]}</span>` : '';
         row.innerHTML = `
-          <td>${period.name}</td>
+          <td><span class="class-info">${period.name}</span>${section}</td>
           <td>${period.start}</td>
           <td>${period.end}</td>
         `;
