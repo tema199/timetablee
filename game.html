@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width , initial-scale=1.0">
+  <title>لعبة CSS - استعلام الوسائط</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      direction: rtl;
+      background-color: #eef9ff;
+      padding: 20px;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    .game-container {
+      max-width: 800px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .question {
+      background-color: #fff;
+      padding: 15px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .code-box {
+      background-color: #f7f7f7;
+      padding: 15px;
+      font-family: monospace;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      direction: ltr;
+      white-space: pre-wrap;
+    }
+
+    .input-inline {
+      display: inline-block;
+      width: 80px;
+      padding: 3px;
+      margin: 0 5px;
+      font-family: monospace;
+      font-size: 14px;
+    }
+
+    .drop-zone {
+      display: inline-block;
+      min-width: 60px;
+      min-height: 24px;
+      background-color: #fff;
+      border: 2px dashed #aaa;
+      vertical-align: middle;
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+
+    .draggable {
+      padding: 5px 10px;
+      margin: 5px;
+      background-color: #cce5ff;
+      border: 1px solid #007bff;
+      border-radius: 5px;
+      cursor: grab;
+      display: inline-block;
+      font-family: monospace;
+    }
+
+    .options {
+      background-color: #ffffff;
+      border: 2px solid #ddd;
+      padding: 10px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .check-btn {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .result {
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .correct {
+      color: green;
+    }
+
+    .wrong {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>  استعلام الوسائط</h2>
+
+  <div class="game-container">
+
+    <div class="question">
+      <strong>السؤال:</strong> <br>
+      أكمل الكود التالي ليقوم بتغيير عرض الصورة إلى <strong>300 بكسل</strong> عندما يكون عرض الشاشة أقل من <strong>700 بكسل</strong>.
+    </div>
+
+    <div class="code-box">
+@media screen and (max-width: 
+<input class="input-inline" type="text" id="screenWidth" placeholder="px" ondrop="drop(event)" ondragover="allowDrop(event)">
+) {
+  <div class="drop-zone" id="tagDrop" ondrop="drop(event)" ondragover="allowDrop(event)">اسحب الوسم هنا</div> {
+    width: <input class="input-inline" type="text" id="imageWidth" placeholder="px" ondrop="drop(event)" ondragover="allowDrop(event)">;
+  }
+}
+    </div>
+
+    <div class="options">
+      <div class="draggable" draggable="true" id="imgTag" ondragstart="drag(event)">img</div>
+      <div class="draggable" draggable="true" id="700px" ondragstart="drag(event)">700px</div>
+      <div class="draggable" draggable="true" id="300px" ondragstart="drag(event)">300px</div>
+          <div class="draggable" draggable="true" id="400px" ondragstart="drag(event)">400px</div>
+      <div class="draggable" draggable="true" id="body" ondragstart="drag(event)">body</div>
+
+    </div>
+
+    <button class="check-btn" onclick="checkAnswer()">تحقق من الإجابة ✅</button>
+
+    <div class="result" id="resultText"></div>
+
+  </div>
+
+  <script>
+    function allowDrop(ev) {
+      ev.preventDefault();
+    }
+
+    function drag(ev) {
+      ev.dataTransfer.setData("text", ev.target.id);
+    }
+
+    function drop(ev) {
+      ev.preventDefault();
+      var data = ev.dataTransfer.getData("text");
+      var dragged = document.getElementById(data);
+
+      // إذا كانت المنطقة هي input (مثل screenWidth أو imageWidth)
+      if (ev.target.tagName === "INPUT") {
+        ev.target.value = dragged.textContent; // مسح الموجود ثم الإضافة
+      }
+
+      // إذا كانت drop-zone الخاصة بالوسم img
+      else if (ev.target.classList.contains("drop-zone")) {
+        ev.target.textContent = dragged.textContent;
+        ev.target.setAttribute("data-value", dragged.textContent);
+      }
+    }
+
+    function checkAnswer() {
+      const screenVal = document.getElementById('screenWidth').value.trim();
+      const imageVal = document.getElementById('imageWidth').value.trim();
+      const tagVal = document.getElementById('tagDrop').getAttribute("data-value");
+
+      const result = document.getElementById('resultText');
+
+      if (screenVal === "700px" && imageVal === "300px" && tagVal === "img") {
+        result.textContent = "🎉 إجابة صحيحة! ممتاز!";
+        result.className = "result correct";
+      } else {
+        result.textContent = "❌ هناك خطأ في الإجابة. حاولي مرة أخرى.";
+        result.className = "result wrong";
+      }
+    }
+  </script>
+
+</body>
+</html>
