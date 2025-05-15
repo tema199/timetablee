@@ -179,9 +179,11 @@
       const result = document.getElementById('resultText');
 
       if (screenVal === "700px" && imageVal === "300px" && tagVal === "img") {
+        alert(اجابة صحيحة ، ممتاز );
         result.textContent = "🎉 إجابة صحيحة! ممتاز!";
         result.className = "result correct";
       } else {
+        alert(اجابة خاطئة ، حاولي مرة اخرى );
         result.textContent = "❌ هناك خطأ في الإجابة. حاولي مرة أخرى.";
         result.className = "result wrong";
       }
