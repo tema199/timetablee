@@ -103,24 +103,37 @@
   </div>
 
   <script>
-    // توقيت موحد لجميع الأيام
-    const dailySchedule = [
-      { name: 'الحصة الأولى', start: '07:00', end: '07:50' },
-      { name: 'الحصة الثانية', start: '07:50', end: '08:40' },
-      { name: 'الحصة الثالثة', start: '08:40', end: '09:30' },
-      { name: 'فسحة', start: '09:30', end: '09:55' },
-      { name: 'الحصة الرابعة', start: '09:55', end: '10:45' },
-      { name: 'الحصة الخامسة', start: '10:45', end: '11:35' },
-      { name: 'الحصة السادسة', start: '11:35', end: '12:25' },
-      { name: 'الحصة السابعة', start: '12:25', end: '13:15' }
+    // الأحد والاثنين
+    const scheduleSunMon = [
+      { name: 'الحصة الأولى', start: '07:30', end: '08:20' },
+      { name: 'الحصة الثانية', start: '08:20', end: '09:10' },
+      { name: 'الحصة الثالثة', start: '09:10', end: '10:00' },
+      { name: 'فسحة', start: '10:00', end: '10:25' },
+      { name: 'الحصة الرابعة', start: '10:30', end: '11:20' },
+      { name: 'الحصة الخامسة', start: '11:20', end: '12:10' },
+      { name: 'الحصة السادسة', start: '12:10', end: '12:45' },
+      { name: 'فسحة صلاة', start: '12:45', end: '13:00' },
+      { name: 'الحصة السابعة', start: '13:00', end: '13:45' }
+    ];
+
+    // الثلاثاء إلى الخميس
+    const scheduleTueThu = [
+      { name: 'الحصة الأولى', start: '07:30', end: '08:20' },
+      { name: 'الحصة الثانية', start: '08:20', end: '09:10' },
+      { name: 'الحصة الثالثة', start: '09:10', end: '10:00' },
+      { name: 'فسحة', start: '10:00', end: '10:30' },
+      { name: 'الحصة الرابعة', start: '10:30', end: '11:20' },
+      { name: 'الحصة الخامسة', start: '11:20', end: '12:10' },
+      { name: 'فسحة صلاة', start: '12:10', end: '12:35' },
+      { name: 'الحصة السادسة', start: '12:35', end: '13:25' }
     ];
 
     const schedule = {
-      'Sunday': dailySchedule,
-      'Monday': dailySchedule,
-      'Tuesday': dailySchedule,
-      'Wednesday': dailySchedule,
-      'Thursday': dailySchedule,
+      'Sunday': scheduleSunMon,
+      'Monday': scheduleSunMon,
+      'Tuesday': scheduleTueThu,
+      'Wednesday': scheduleTueThu,
+      'Thursday': scheduleTueThu,
     };
 
     // حصصي
