@@ -1,194 +1,510 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html dir="rtl" lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width , initial-scale=1.0">
-  <title>لعبة CSS - استعلام الوسائط</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      direction: rtl;
-      background-color: #eef9ff;
-      padding: 20px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>درس النماذج HTML | الصف المقلوب</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2e8b57;
+            --secondary-color: #f0fdf4;
+            --accent-color: #eab308;
+            --text-color: #333;
+            --error-color: #991b1b;
+            --success-color: #065f46;
+        }
 
-    h2 {
-      text-align: center;
-    }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 20px;
+            color: var(--text-color);
+        }
 
-    .game-container {
-      max-width: 800px;
-      margin: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+            padding: 20px;
+        }
 
-    .question {
-      background-color: #fff;
-      padding: 15px;
-      border: 2px solid #ccc;
-      border-radius: 8px;
-    }
+        header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            margin-bottom: 20px;
+        }
 
-    .code-box {
-      background-color: #f7f7f7;
-      padding: 15px;
-      font-family: monospace;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      direction: ltr;
-      white-space: pre-wrap;
-    }
+        h1 { color: var(--primary-color); margin: 0; }
+        
+        /* شريط التقدم */
+        .progress-container {
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin: 20px 0;
+            height: 10px;
+            width: 100%;
+        }
 
-    .input-inline {
-      display: inline-block;
-      width: 80px;
-      padding: 3px;
-      margin: 0 5px;
-      font-family: monospace;
-      font-size: 14px;
-    }
+        .progress-bar {
+            background-color: var(--primary-color);
+            height: 100%;
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.5s;
+        }
 
-    .drop-zone {
-      display: inline-block;
-      min-width: 60px;
-      min-height: 24px;
-      background-color: #fff;
-      border: 2px dashed #aaa;
-      vertical-align: middle;
-      padding: 2px 5px;
-      border-radius: 4px;
-    }
+        /* المحطات */
+        .station { display: none; animation: fadeIn 0.5s; }
+        .station.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    .draggable {
-      padding: 5px 10px;
-      margin: 5px;
-      background-color: #cce5ff;
-      border: 1px solid #007bff;
-      border-radius: 5px;
-      cursor: grab;
-      display: inline-block;
-      font-family: monospace;
-    }
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            font-family: 'Tajawal', sans-serif;
+        }
+        .btn:hover { background-color: #277549; }
+        .btn-check { background-color: var(--accent-color); color: black; font-weight: bold;}
 
-    .options {
-      background-color: #ffffff;
-      border: 2px solid #ddd;
-      padding: 10px;
-      border-radius: 8px;
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
+        /* تنسيق الكود والشرح */
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #d63384;
+            direction: ltr;
+            display: inline-block;
+            font-size: 1.1em;
+        }
 
-    .check-btn {
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
+        .concept-box {
+            border: 2px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
 
-    .result {
-      font-size: 18px;
-      font-weight: bold;
-      margin-top: 10px;
-    }
+        /* تنسيق Fieldset التعليمي */
+        .fieldset-demo {
+            border: 2px solid var(--primary-color);
+            padding: 15px;
+            position: relative;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        .legend-demo {
+            background: var(--primary-color);
+            color: white;
+            padding: 2px 10px;
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            border-radius: 4px;
+        }
 
-    .correct {
-      color: green;
-    }
+        /* منطقة المحرر */
+        textarea {
+            width: 100%;
+            height: 80px;
+            direction: ltr;
+            font-family: monospace;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            background: #2d2d2d;
+            color: #fff;
+            font-size: 18px;
+        }
+        .preview-box {
+            border: 2px dashed var(--primary-color);
+            padding: 20px;
+            min-height: 80px;
+            border-radius: 5px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+        }
 
-    .wrong {
-      color: red;
-    }
-  </style>
+        .feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            font-weight: bold;
+        }
+        .success { background-color: #d1fae5; color: var(--success-color); }
+        .error { background-color: #fee2e2; color: var(--error-color); }
+
+        /* الأسئلة */
+        .quiz-option {
+            background: #f9fafb;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .quiz-option:hover { background: #eefff4; border-color: var(--primary-color); }
+
+        /* الشهادة */
+        #certificate-view {
+            text-align: center;
+            display: none;
+            border: 10px double var(--primary-color);
+            padding: 40px;
+            margin-top: 20px;
+            background-image: linear-gradient(to bottom right, #ffffff, #f0fdf4);
+        }
+    </style>
 </head>
 <body>
 
-  <h2>  استعلام الوسائط</h2>
+<div class="container">
+    <header>
+        <h1>رحلة إنشاء النماذج (Forms)</h1>
+        <p>تعلمي كيفية تصميم صفحات تسجيل الدخول والتواصل بنفسك!</p>
+    </header>
 
-  <div class="game-container">
-
-    <div class="question">
-      <strong>السؤال:</strong> <br>
-      أكملي الكود التالي ليقوم بتغيير عرض الصورة إلى <strong>300 بكسل</strong> عندما يكون عرض الشاشة أقل من <strong>700 بكسل</strong>.
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
     </div>
 
-    <div class="code-box">
-@media screen and (max-width: 
-<input class="input-inline" type="text" id="screenWidth" placeholder="px" ondrop="drop(event)" ondragover="allowDrop(event)">
-) {
-  <div class="drop-zone" id="tagDrop" ondrop="drop(event)" ondragover="allowDrop(event)">اسحبي الوسم هنا</div> {
-    width: <input class="input-inline" type="text" id="imageWidth" placeholder="px" ondrop="drop(event)" ondragover="allowDrop(event)">;
-  }
-}
+    <div id="step0" class="station active">
+        <h2>أهلاً بكِ أيتها المبرمجة!</h2>
+        <p>في هذا الدرس الممتع، ستتعلمين أساسيات جمع البيانات عبر المواقع.</p>
+        <div class="concept-box">
+            <h3>ماذا ستتعلمين اليوم؟</h3>
+            <ul>
+                <li><strong>النموذج (Form):</strong> الحاوية التي تجمع البيانات.</li>
+                <li><strong>التجميع (Fieldset & Legend):</strong> لترتيب وتنسيق النموذج.</li>
+                <li><strong>حقول الإدخال (Inputs):</strong> (نص، كلمة مرور، اختيار من متعدد).</li>
+            </ul>
+        </div>
+        <button class="btn" onclick="nextStep(1)">انطلق للشرح 🚀</button>
     </div>
 
-    <div class="options">
-      <div class="draggable" draggable="true" id="imgTag" ondragstart="drag(event)">img</div>
-      <div class="draggable" draggable="true" id="700px" ondragstart="drag(event)">700px</div>
-      <div class="draggable" draggable="true" id="300px" ondragstart="drag(event)">300px</div>
-          <div class="draggable" draggable="true" id="400px" ondragstart="drag(event)">400px</div>
-      <div class="draggable" draggable="true" id="body" ondragstart="drag(event)">body</div>
+    <div id="step1" class="station">
+        <h2>المحطة 1: المفاهيم الأساسية</h2>
+        
+        <div class="concept-box">
+            <h3>1. الحاوية الكبيرة: <code>&lt;form&gt;</code></h3>
+            <p>أي نموذج يجب أن يبدأ بوسم <code>&lt;form&gt;</code> وينتهي بـ <code>&lt;/form&gt;</code>.</p>
+        </div>
 
+        <div class="concept-box">
+            <h3>2. الترتيب والأناقة: <code>fieldset</code> و <code>legend</code></h3>
+            <p>يستخدم <code>fieldset</code> لرسم إطار حول العناصر المترابطة، و <code>legend</code> لوضع عنوان لهذا الإطار.</p>
+            <div class="fieldset-demo">
+                <span class="legend-demo">&lt;legend&gt;عنوان المجموعة&lt;/legend&gt;</span>
+                <p style="text-align:center; color:#666;">
+                    هذا الإطار هو &lt;fieldset&gt;<br>
+                    نضع بداخله حقول الإدخال
+                </p>
+            </div>
+        </div>
+
+        <div class="concept-box">
+            <h3>3. أنواع الإدخال (Inputs)</h3>
+            <table width="100%" cellpadding="10">
+                <tr style="background:#eee;">
+                    <th>النوع</th>
+                    <th>الكود</th>
+                    <th>الشكل</th>
+                </tr>
+                <tr>
+                    <td>نص عادي</td>
+                    <td><code>type="text"</code></td>
+                    <td><input type="text" placeholder="اسمك"></td>
+                </tr>
+                <tr>
+                    <td>كلمة مرور</td>
+                    <td><code>type="password"</code></td>
+                    <td><input type="password" placeholder="****"></td>
+                </tr>
+                <tr>
+                    <td>اختيار (Radio)</td>
+                    <td><code>type="radio"</code></td>
+                    <td><input type="radio"> ذكر <input type="radio"> أنثى</td>
+                </tr>
+            </table>
+        </div>
+        <button class="btn" onclick="nextStep(2)">فهمت، لنبدأ التطبيق! 💻</button>
     </div>
 
-    <button class="check-btn" onclick="checkAnswer()">تحققي من الإجابة ✅</button>
+    <div id="step2" class="station">
+        <h2>المحطة 2: المختبر (مهمة 1 من 3)</h2>
+        <p><strong>المطلوب:</strong> اكتبي كود لإنشاء <u>حقل نصي</u> (Text) لاسم المستخدم.</p>
+        
+        <div class="code-input">
+            <textarea id="code1" placeholder='<input type="text">'></textarea>
+            <button class="btn btn-check" onclick="checkLab1()">تحقق</button>
+        </div>
+        <div class="preview-box" id="prev1">النتيجة ستظهر هنا</div>
+        <div id="feed1" class="feedback"></div>
+        
+        <button class="btn" id="nextLab1" style="display:none" onclick="nextStep(3)">المهمة التالية ⬅️</button>
+    </div>
 
-    <div class="result" id="resultText"></div>
+    <div id="step3" class="station">
+        <h2>المحطة 3: المختبر (مهمة 2 من 3)</h2>
+        <p><strong>المطلوب:</strong> نريد حقل <u>كلمة مرور</u> (Password) بحيث لا تظهر الحروف.</p>
+        
+        <div class="code-input">
+            <textarea id="code2" placeholder='<input type="...">'></textarea>
+            <button class="btn btn-check" onclick="checkLab2()">تحقق</button>
+        </div>
+        <div class="preview-box" id="prev2">النتيجة ستظهر هنا</div>
+        <div id="feed2" class="feedback"></div>
 
-  </div>
+        <button class="btn" id="nextLab2" style="display:none" onclick="nextStep(4)">المهمة التالية ⬅️</button>
+    </div>
 
-  <script>
-    function allowDrop(ev) {
-      ev.preventDefault();
+    <div id="step4" class="station">
+        <h2>المحطة 4: المختبر (مهمة 3 من 3)</h2>
+        <p><strong>المطلوب:</strong> نريد زر اختيار دائري (Radio) يستخدم للاختيار من متعدد (مثل الجنس: ذكر/أنثى).</p>
+        <p>اكتبي كود لزر اختيار واحد فقط.</p>
+        
+        <div class="code-input">
+            <textarea id="code3" placeholder='<input type="...">'></textarea>
+            <button class="btn btn-check" onclick="checkLab3()">تحقق</button>
+        </div>
+        <div class="preview-box" id="prev3">النتيجة ستظهر هنا</div>
+        <div id="feed3" class="feedback"></div>
+
+        <button class="btn" id="nextLab3" style="display:none" onclick="nextStep(5)">انتقال للعبة الأخطاء 🎮</button>
+    </div>
+
+    <div id="step5" class="station">
+        <h2>المحطة 5: المبرمجة الذكية (تحدي 1 من 3)</h2>
+        <p>كتبت زميلتك هذا الكود، ولكن العنوان لا يظهر بشكل صحيح مع الإطار. أين الخطأ؟</p>
+        <div style="background:#333; color:#fff; padding:15px; direction:ltr; margin-bottom:15px;">
+            &lt;fieldset&gt;<br>
+            &nbsp;&nbsp; &lt;h1&gt; بيانات الطالب &lt;/h1&gt;<br>
+            &lt;/fieldset&gt;
+        </div>
+
+        <div class="quiz-option" onclick="checkDebug(this, false, 1)">
+            <input type="radio" name="d1"> الخطأ في <code>fieldset</code>، يجب استخدام <code>div</code>.
+        </div>
+        <div class="quiz-option" onclick="checkDebug(this, true, 1)">
+            <input type="radio" name="d1"> الخطأ في <code>h1</code>، يجب استخدام وسم <code>legend</code> للعناوين داخل الإطار.
+        </div>
+        <div id="debugFeedback1" class="feedback"></div>
+        <button class="btn" id="btnDebugNext1" style="display:none" onclick="nextStep(6)">التحدي التالي</button>
+    </div>
+
+    <div id="step6" class="station">
+        <h2>المحطة 6: المبرمجة الذكية (تحدي 2 من 3)</h2>
+        <p>أرادت الطالبة إنشاء مربع لكتابة "رسالة طويلة"، فكتبت الكود التالي ولم يعمل. لماذا؟</p>
+        <div style="background:#333; color:#fff; padding:15px; direction:ltr; margin-bottom:15px;">
+            &lt;input type="textarea"&gt;
+        </div>
+
+        <div class="quiz-option" onclick="checkDebug(this, true, 2)">
+            <input type="radio" name="d2"> لا يوجد نوع اسمه <code>textarea</code> داخل input. الصحيح هو استخدام وسم <code>&lt;textarea&gt;</code>.
+        </div>
+        <div class="quiz-option" onclick="checkDebug(this, false, 2)">
+            <input type="radio" name="d2"> الخطأ إملائي، يجب أن تكون <code>type="text-area"</code>.
+        </div>
+        <div id="debugFeedback2" class="feedback"></div>
+        <button class="btn" id="btnDebugNext2" style="display:none" onclick="nextStep(7)">التحدي التالي</button>
+    </div>
+
+    <div id="step7" class="station">
+        <h2>المحطة 7: المبرمجة الذكية (تحدي 3 من 3)</h2>
+        <p>نريد نصاً رمادياً يختفي بمجرد أن يبدأ المستخدم بالكتابة (تلميح)، لكن الكود التالي جعل النص ثابتاً لا يختفي. ما السبب؟</p>
+        <div style="background:#333; color:#fff; padding:15px; direction:ltr; margin-bottom:15px;">
+            &lt;input type="text" value="اكتب اسمك هنا"&gt;
+        </div>
+
+        <div class="quiz-option" onclick="checkDebug(this, false, 3)">
+            <input type="radio" name="d3"> يجب حذف علامات التنصيص "".
+        </div>
+        <div class="quiz-option" onclick="checkDebug(this, true, 3)">
+            <input type="radio" name="d3"> الخطأ في استخدام <code>value</code>. السمة الصحيحة للتلميح هي <code>placeholder</code>.
+        </div>
+        <div id="debugFeedback3" class="feedback"></div>
+        <button class="btn" id="btnDebugNext3" style="display:none" onclick="nextStep(8)">انتقال للاختبار النهائي 📝</button>
+    </div>
+
+    <div id="step8" class="station">
+        <h2>المحطة 8: الاختبار النهائي</h2>
+        <form id="finalQuiz">
+            <p>1. الوسم المستخدم لرسم إطار حول مجموعة عناصر هو:</p>
+            <label><input type="radio" name="q1" value="correct"> &lt;fieldset&gt;</label><br>
+            <label><input type="radio" name="q1" value="wrong"> &lt;box&gt;</label><br>
+            
+            <p>2. ماذا نستخدم لوضع عنوان لهذا الإطار (Fieldset)؟</p>
+            <label><input type="radio" name="q2" value="wrong"> &lt;title&gt;</label><br>
+            <label><input type="radio" name="q2" value="correct"> &lt;legend&gt;</label><br>
+
+            <p>3. الوسم &lt;input type="radio"&gt; يسمح للمستخدم بـ:</p>
+            <label><input type="radio" name="q3" value="correct"> اختيار خيار واحد فقط</label><br>
+            <label><input type="radio" name="q3" value="wrong"> كتابة نص طويل</label><br>
+
+            <p>4. لكتابة رسالة طويلة متعددة الأسطر نستخدم:</p>
+            <label><input type="radio" name="q4" value="wrong"> &lt;input type="text"&gt;</label><br>
+            <label><input type="radio" name="q4" value="correct"> &lt;textarea&gt;</label><br>
+        </form>
+        <button class="btn btn-check" onclick="finishQuiz()">اعتماد النتيجة</button>
+    </div>
+
+    <div id="step9" class="station">
+        <h2>🎉 أحسنتِ يا بطلة! 🎉</h2>
+        <p>لقد أتممتِ جميع المهام بنجاح.</p>
+        <p>اكتبي اسمك الثلاثي للحصول على الشهادة:</p>
+        <input type="text" id="studentName" style="padding: 10px; width: 60%; font-size: 18px;" placeholder="الاسم هنا...">
+        <br>
+        <button class="btn" onclick="generateCertificate()">إصدار الشهادة</button>
+
+        <div id="certificate-view">
+            <div style="border: 2px solid #2e8b57; padding: 30px; border-radius: 10px;">
+                <h1 style="color:#2e8b57;">شهادة إتقان مهارة</h1>
+                <p>تشهد معلمة الحاسب أن المبرمجة المبدعة:</p>
+                <h2 id="certNameDisplay" style="color:#333; border-bottom: 2px solid #eab308; display:inline-block;"></h2>
+                <p>قد أتمت درس <strong>"إنشاء النماذج HTML"</strong> وتدربت على:</p>
+                <p style="color:#555; font-size: 14px;">(Text inputs - Passwords - Radio buttons - Textarea - Debugging)</p>
+                <h3>الدرجة المستحقة: <span id="finalScoreDisplay" style="color:red;"></span> / 10</h3>
+                <p style="margin-top: 30px; font-size:14px; color:#888;">معلمة المادة: فاطمة الفقيه</p>
+            </div>
+            <button class="btn" onclick="window.print()">طباعة / حفظ PDF</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let totalScore = 0;
+    // متغيرات الدرجات لكل قسم (المجموع 10)
+    // المختبر: 3 نقاط (1 لكل مهمة)
+    // الأخطاء: 3 نقاط (1 لكل مهمة)
+    // الاختبار: 4 نقاط (1 لكل سؤال)
+    let scores = {
+        lab1:0, lab2:0, lab3:0, 
+        dbg1:0, dbg2:0, dbg3:0, 
+        quiz:0
+    };
+
+    function nextStep(step) {
+        document.querySelectorAll('.station').forEach(el => el.classList.remove('active'));
+        document.getElementById('step' + step).classList.add('active');
+        let percent = (step / 9) * 100;
+        document.getElementById('progressBar').style.width = percent + "%";
     }
 
-    function drag(ev) {
-      ev.dataTransfer.setData("text", ev.target.id);
+    // --- دوال المختبر (3 نقاط) ---
+    function checkLab1() { 
+        let code = document.getElementById('code1').value.toLowerCase();
+        let feedback = document.getElementById('feed1');
+        document.getElementById('prev1').innerHTML = document.getElementById('code1').value;
+        if (code.includes('<input') && code.includes('type="text"')) {
+            feedback.innerHTML = "✅ ممتاز! (type='text') صحيح.";
+            feedback.className = "feedback success"; feedback.style.display = 'block';
+            document.getElementById('nextLab1').style.display = 'inline-block';
+            if(scores.lab1 === 0) { totalScore += 1; scores.lab1 = 1; }
+        } else {
+            feedback.innerHTML = "⚠️ تأكدي من كتابة type=\"text\"";
+            feedback.className = "feedback error"; feedback.style.display = 'block';
+        }
     }
 
-    function drop(ev) {
-      ev.preventDefault();
-      var data = ev.dataTransfer.getData("text");
-      var dragged = document.getElementById(data);
-
-      // إذا كانت المنطقة هي input (مثل screenWidth أو imageWidth)
-      if (ev.target.tagName === "INPUT") {
-        ev.target.value = dragged.textContent; // مسح الموجود ثم الإضافة
-      }
-
-      // إذا كانت drop-zone الخاصة بالوسم img
-      else if (ev.target.classList.contains("drop-zone")) {
-        ev.target.textContent = dragged.textContent;
-        ev.target.setAttribute("data-value", dragged.textContent);
-      }
+    function checkLab2() { 
+        let code = document.getElementById('code2').value.toLowerCase();
+        let feedback = document.getElementById('feed2');
+        document.getElementById('prev2').innerHTML = document.getElementById('code2').value;
+        if (code.includes('<input') && code.includes('type="password"')) {
+            feedback.innerHTML = "✅ أحسنتِ! (type='password') صحيح.";
+            feedback.className = "feedback success"; feedback.style.display = 'block';
+            document.getElementById('nextLab2').style.display = 'inline-block';
+            if(scores.lab2 === 0) { totalScore += 1; scores.lab2 = 1; }
+        } else {
+            feedback.innerHTML = "⚠️ تأكدي من كتابة type=\"password\"";
+            feedback.className = "feedback error"; feedback.style.display = 'block';
+        }
     }
 
-    function checkAnswer() {
-      const screenVal = document.getElementById('screenWidth').value.trim();
-      const imageVal = document.getElementById('imageWidth').value.trim();
-      const tagVal = document.getElementById('tagDrop').getAttribute("data-value");
-
-      const result = document.getElementById('resultText');
-
-      if (screenVal === "700px" && imageVal === "300px" && tagVal === "img") {
-        alert(اجابة صحيحة ، ممتاز );
-        result.textContent = "🎉 إجابة صحيحة! ممتاز!";
-        result.className = "result correct";
-      } else {
-        alert(اجابة خاطئة ، حاولي مرة اخرى );
-        result.textContent = "❌ هناك خطأ في الإجابة. حاولي مرة أخرى.";
-        result.className = "result wrong";
-      }
+    function checkLab3() { 
+        let code = document.getElementById('code3').value.toLowerCase();
+        let feedback = document.getElementById('feed3');
+        document.getElementById('prev3').innerHTML = document.getElementById('code3').value;
+        if (code.includes('<input') && code.includes('type="radio"')) {
+            feedback.innerHTML = "✅ رائع! (type='radio') صحيح.";
+            feedback.className = "feedback success"; feedback.style.display = 'block';
+            document.getElementById('nextLab3').style.display = 'inline-block';
+            if(scores.lab3 === 0) { totalScore += 1; scores.lab3 = 1; }
+        } else {
+            feedback.innerHTML = "⚠️ تأكدي من كتابة type=\"radio\"";
+            feedback.className = "feedback error"; feedback.style.display = 'block';
+        }
     }
-  </script>
+
+    // --- دوال التصحيح (3 نقاط) ---
+    function checkDebug(el, isCorrect, taskNum) {
+        let feedback = document.getElementById('debugFeedback' + taskNum);
+        let btn = document.getElementById('btnDebugNext' + taskNum);
+        
+        if(isCorrect) {
+            feedback.innerHTML = "✅ إجابة صحيحة! أحسنتِ التحليل.";
+            feedback.className = "feedback success";
+            feedback.style.display = 'block';
+            btn.style.display = 'inline-block';
+            
+            // احتساب الدرجة مرة واحدة
+            let key = 'dbg' + taskNum;
+            if(scores[key] === 0) { totalScore += 1; scores[key] = 1; }
+        } else {
+            feedback.innerHTML = "❌ خطأ.. حاولي مرة أخرى.";
+            feedback.className = "feedback error";
+            feedback.style.display = 'block';
+        }
+    }
+
+    // --- دالة الاختبار (4 نقاط) ---
+    function finishQuiz() {
+        let q1 = document.querySelector('input[name="q1"]:checked')?.value;
+        let q2 = document.querySelector('input[name="q2"]:checked')?.value;
+        let q3 = document.querySelector('input[name="q3"]:checked')?.value;
+        let q4 = document.querySelector('input[name="q4"]:checked')?.value;
+
+        if (!q1 || !q2 || !q3 || !q4) { alert("الرجاء حل جميع الأسئلة"); return; }
+
+        let quizScore = 0;
+        if(q1 === 'correct') quizScore++;
+        if(q2 === 'correct') quizScore++;
+        if(q3 === 'correct') quizScore++;
+        if(q4 === 'correct') quizScore++;
+
+        if(scores.quiz === 0) { totalScore += quizScore; scores.quiz = quizScore; }
+        
+        nextStep(9);
+    }
+
+    function generateCertificate() {
+        let name = document.getElementById('studentName').value;
+        if(name.trim() === "") { alert("اكتبي اسمك أولاً!"); return; }
+        document.getElementById('certNameDisplay').innerText = name;
+        document.getElementById('finalScoreDisplay').innerText = totalScore;
+        document.getElementById('certificate-view').style.display = 'block';
+    }
+
+</script>
 
 </body>
 </html>
