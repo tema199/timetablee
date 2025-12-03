@@ -3,53 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>درس النماذج HTML | الصف المقلوب</title>
+    <title>درس النماذج HTML | رحلة البيانات</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #2e8b57;
-            --secondary-color: #f0fdf4;
-            --accent-color: #eab308;
-            --text-color: #333;
-            --error-color: #991b1b;
-            --success-color: #065f46;
+            --primary-color: #2563eb; 
+            --secondary-color: #eff6ff;
+            --accent-color: #f59e0b; 
+            --text-color: #1e293b;
+            --success-color: #10b981;
+            --error-color: #ef4444;
         }
 
         body {
             font-family: 'Tajawal', sans-serif;
-            background-color: #f3f4f6;
+            background-color: #f8fafc;
             margin: 0;
-            padding: 10px; /* تقليل الهوامش للجوال */
+            padding: 15px;
             color: var(--text-color);
             line-height: 1.6;
         }
 
         .container {
-            max-width: 900px;
-            width: 100%;
+            max-width: 800px;
             margin: 0 auto;
             background: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-radius: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            padding: 15px;
-            box-sizing: border-box; /* مهم جداً للأبعاد */
+            padding: 20px;
         }
 
         header {
             text-align: center;
+            border-bottom: 2px solid #e2e8f0;
+            margin-bottom: 25px;
             padding-bottom: 15px;
-            border-bottom: 2px solid #eee;
-            margin-bottom: 15px;
         }
 
         h1 { color: var(--primary-color); margin: 0; font-size: 1.5rem; }
-        h2 { font-size: 1.3rem; }
+        h2 { font-size: 1.3rem; color: #334155; border-right: 5px solid var(--accent-color); padding-right: 15px; margin-top: 0; }
         
         /* شريط التقدم */
         .progress-container {
-            background-color: #e0e0e0;
-            border-radius: 10px;
+            background-color: #e2e8f0;
+            border-radius: 99px;
             margin: 20px 0;
             height: 8px;
             width: 100%;
@@ -58,168 +56,134 @@
         .progress-bar {
             background-color: var(--primary-color);
             height: 100%;
-            border-radius: 10px;
+            border-radius: 99px;
             width: 0%;
-            transition: width 0.5s;
+            transition: width 0.6s ease;
         }
 
         /* المحطات */
-        .station { display: none; animation: fadeIn 0.5s; }
+        .station { display: none; animation: slideIn 0.5s ease-out; }
         .station.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* البطاقات التعليمية */
+        .concept-card {
+            background: var(--secondary-color);
+            border: 1px solid #dbeafe;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-number {
+            background: var(--primary-color);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-left: 12px;
+            flex-shrink: 0;
+        }
+
+        /* تنسيق الرسومات (SVG) */
+        .svg-container {
+            text-align: center;
+            margin: 20px auto;
+            max-width: 100%;
+            user-select: none;
+        }
+        svg { max-width: 100%; height: auto; }
+
+        /* الأزرار */
         .btn {
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 12px 20px; /* تكبير منطقة اللمس */
-            border-radius: 8px;
+            padding: 14px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 16px;
-            margin-top: 15px;
+            width: 100%;
             font-family: 'Tajawal', sans-serif;
-            width: 100%; /* زر كامل العرض في الجوال */
-            max-width: 300px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
+            margin-top: 15px;
+            font-weight: bold;
+            transition: transform 0.1s;
         }
-        .btn:hover { background-color: #277549; }
-        .btn-check { background-color: var(--accent-color); color: black; font-weight: bold;}
-        .btn-outline { background-color: transparent; border: 2px solid var(--primary-color); color: var(--primary-color); margin-top: 5px;}
-
-        /* تنسيق الكود والشرح */
+        .btn:active { transform: scale(0.98); }
+        .btn-check { background-color: var(--accent-color); color: #fff; }
+        
+        /* الكود والمحرر */
         code {
-            background-color: #f4f4f4;
+            background-color: #f1f5f9;
             padding: 2px 6px;
             border-radius: 4px;
             font-family: monospace;
             color: #d63384;
             direction: ltr;
             display: inline-block;
-            font-size: 1em;
-            word-break: break-all;
+            font-size: 1.1em;
         }
 
-        .concept-box {
-            border: 2px solid #ddd;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 8px;
-            background-color: #fafafa;
-        }
-
-        /* تنسيق Fieldset التعليمي */
-        .fieldset-demo {
-            border: 2px solid var(--primary-color);
-            padding: 20px 10px 10px 10px;
-            position: relative;
-            margin-top: 25px;
-            border-radius: 5px;
-        }
-        .legend-demo {
-            background: var(--primary-color);
-            color: white;
-            padding: 2px 10px;
-            position: absolute;
-            top: -15px;
-            right: 10px;
-            border-radius: 4px;
-            font-size: 0.9em;
-        }
-
-        /* منطقة المحرر */
         textarea {
             width: 100%;
-            height: 100px;
+            height: 110px;
             direction: ltr;
-            font-family: 'Courier New', monospace; /* خط أوضح للكود */
-            padding: 10px;
-            border: 2px solid #ccc;
+            font-family: monospace;
+            padding: 12px;
+            border: 2px solid #cbd5e1;
             border-radius: 8px;
-            background: #2d2d2d;
+            background: #1e293b;
             color: #fff;
-            font-size: 16px; /* حجم خط مناسب لمنع التكبير التلقائي في آيفون */
+            font-size: 16px; 
             box-sizing: border-box;
-            resize: vertical;
         }
-        textarea:focus { outline: 2px solid var(--accent-color); }
-
-        .preview-box {
-            border: 2px dashed var(--primary-color);
-            padding: 15px;
-            min-height: 60px;
-            border-radius: 5px;
-            background: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 10px;
-            direction: ltr; /* لعرض النتيجة بشكل صحيح */
-        }
+        textarea:focus { outline: none; border-color: var(--primary-color); }
 
         .feedback {
             margin-top: 10px;
-            padding: 10px;
-            border-radius: 5px;
+            padding: 12px;
+            border-radius: 8px;
             display: none;
             font-weight: bold;
-            font-size: 0.95rem;
         }
-        .success { background-color: #d1fae5; color: var(--success-color); border: 1px solid var(--success-color); }
-        .error { background-color: #fee2e2; color: var(--error-color); border: 1px solid var(--error-color); }
-        
-        .correct-answer-box {
-            display: none;
-            margin-top: 10px;
-            background: #eef2ff;
-            border: 1px solid #4f46e5;
-            padding: 10px;
-            border-radius: 5px;
-            color: #312e81;
-            font-size: 0.9em;
-            text-align: left;
-            direction: ltr;
-        }
+        .success { background-color: #d1fae5; color: var(--success-color); border: 1px solid #6ee7b7; }
+        .error { background-color: #fee2e2; color: var(--error-color); border: 1px solid #fca5a5; }
 
-        /* الأسئلة */
+        /* خيارات الاختبار */
         .quiz-option {
-            background: #f9fafb;
+            background: white;
             padding: 12px;
             margin-bottom: 8px;
             border-radius: 8px;
-            border: 1px solid #ddd;
+            border: 1px solid #e2e8f0;
             cursor: pointer;
-            transition: 0.2s;
-            display: flex; /* لتحسين المحاذاة */
+            display: flex;
             align-items: center;
-            gap: 10px;
         }
-        .quiz-option:hover { background: #eefff4; border-color: var(--primary-color); }
-        .quiz-option input { margin: 0; }
+        .quiz-option:hover { border-color: var(--primary-color); background: #f8fafc; }
+        .quiz-option input { margin-left: 10px; transform: scale(1.2); }
 
-        /* الجدول */
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 8px; text-align: right; border-bottom: 1px solid #ddd; font-size: 0.9em; }
-        
         /* الشهادة */
         #certificate-view {
             text-align: center;
             display: none;
-            border: 5px double var(--primary-color);
-            padding: 20px;
+            border: 8px double var(--primary-color);
+            padding: 30px;
             margin-top: 20px;
-            background-image: linear-gradient(to bottom right, #ffffff, #f0fdf4);
-        }
-
-        /* تحسينات للجوال */
-        @media (max-width: 600px) {
-            .container { padding: 12px; }
-            h1 { font-size: 1.3rem; }
-            .btn { width: 100%; max-width: none; }
-            th, td { display: block; width: 100%; box-sizing: border-box; }
-            th { background: #eee; }
-            tr { margin-bottom: 10px; display: block; border: 1px solid #eee; }
+            background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
         }
     </style>
 </head>
@@ -227,8 +191,7 @@
 
 <div class="container">
     <header>
-        <h1>رحلة إنشاء النماذج (Forms)</h1>
-        <p>تعلمي كيفية تصميم صفحات تسجيل الدخول والتواصل بنفسك!</p>
+        <h1>رحلة إنشاء النماذج (HTML Forms)</h1>
     </header>
 
     <div class="progress-container">
@@ -236,330 +199,375 @@
     </div>
 
     <div id="step0" class="station active">
-        <h2>أهلاً بكِ أيتها المبرمجة!</h2>
-        <p>في هذا الدرس الممتع، ستتعلمين أساسيات جمع البيانات عبر المواقع.</p>
-        <div class="concept-box">
-            <h3>ماذا ستتعلمين اليوم؟</h3>
-            <ul>
-                <li><strong>النموذج (Form):</strong> الحاوية التي تجمع البيانات.</li>
-                <li><strong>التجميع (Fieldset):</strong> لترتيب وتنسيق النموذج.</li>
-                <li><strong>حقول الإدخال (Inputs):</strong> (نص، كلمة مرور، خيارات).</li>
-            </ul>
+        <div style="text-align:center;">
+            <div class="svg-container">
+                <svg width="200" height="150" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="10" y="10" width="180" height="130" rx="8" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+                    <rect x="10" y="10" width="180" height="25" rx="8" fill="#cbd5e1"/> 
+                    <circle cx="25" cy="22" r="4" fill="#ef4444"/>
+                    <circle cx="40" cy="22" r="4" fill="#f59e0b"/>
+                    <circle cx="55" cy="22" r="4" fill="#10b981"/>
+                    <rect x="20" y="50" width="160" height="80" rx="0" fill="white"/> 
+                    <rect x="40" y="65" width="120" height="15" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+                    <rect x="40" y="90" width="120" height="15" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+                    <rect x="60" y="115" width="80" height="15" rx="3" fill="#2563eb"/> 
+                    <text x="100" y="126" font-family="Arial" font-size="8" fill="white" text-anchor="middle">LOGIN</text>
+                </svg>
+            </div>
+
+            <h2>أهلاً بكِ أيتها المبرمجة!</h2>
+            <p>اليوم سنتعلم كيف نرسل بياناتنا للمواقع بطريقة ذكية وآمنة.</p>
+            <p>هل أنتِ مستعدة لفهم لغة التخاطب مع الخوادم؟</p>
+            <button class="btn" onclick="nextStep(1)">انطلق للشرح 🚀</button>
         </div>
-        <button class="btn" onclick="nextStep(1)">انطلق للشرح 🚀</button>
     </div>
 
     <div id="step1" class="station">
-        <h2>المحطة 1: المفاهيم الأساسية</h2>
+        <h2>المحطة 1: ما هي النماذج؟ ولماذا نستخدمها؟</h2>
         
-        <div class="concept-box">
-            <h3>1. الحاوية الكبيرة: <code>&lt;form&gt;</code></h3>
-            <p>أي نموذج يجب أن يبدأ بوسم <code>&lt;form&gt;</code> وينتهي بـ <code>&lt;/form&gt;</code>.</p>
-        </div>
-
-        <div class="concept-box">
-            <h3>2. الترتيب: <code>fieldset</code> و <code>legend</code></h3>
-            <div class="fieldset-demo">
-                <span class="legend-demo">&lt;legend&gt;عنوان&lt;/legend&gt;</span>
-                <p style="text-align:center; color:#666; font-size:0.9em;">
-                    الإطار هو &lt;fieldset&gt;<br>
-                    العنوان هو &lt;legend&gt;
-                </p>
+        <div class="concept-card">
+            <h3>🌎 نستخدمها كل يوم!</h3>
+            <p>النماذج هي وسيلتنا للتحدث مع المواقع: عند البحث في جوجل، أو تسجيل دخول في مدرستي، أو حتى طلب وجبة!</p>
+            
+            <div class="svg-container" style="background:white; padding:15px; border-radius:10px; border:1px dashed #cbd5e1;">
+                <svg width="100%" height="130" viewBox="0 0 300 130" xmlns="http://www.w3.org/2000/svg">
+                    <text x="150" y="40" font-family="Arial, sans-serif" font-weight="bold" font-size="28" text-anchor="middle">
+                        <tspan fill="#4285f4">G</tspan><tspan fill="#ea4335">o</tspan><tspan fill="#fbbc05">o</tspan><tspan fill="#4285f4">g</tspan><tspan fill="#34a853">l</tspan><tspan fill="#ea4335">e</tspan>
+                    </text>
+                    <rect x="40" y="60" width="220" height="30" rx="15" fill="white" stroke="#dfe1e5" stroke-width="1.5" filter="drop-shadow(0px 1px 2px rgba(0,0,0,0.1))"/>
+                    <text x="60" y="80" font-family="Tajawal, sans-serif" font-size="12" fill="#333" direction="rtl">طريقة تعلم HTML|</text>
+                    <circle cx="240" cy="75" r="8" fill="none" stroke="#4285f4" stroke-width="2"/>
+                    <line x1="246" y1="81" x2="252" y2="87" stroke="#4285f4" stroke-width="2"/>
+                    <rect x="90" y="105" width="55" height="20" rx="4" fill="#f8f9fa" stroke="#f8f9fa"/>
+                    <text x="117" y="119" font-family="Arial" font-size="9" fill="#3c4043" text-anchor="middle">بحث Google</text>
+                </svg>
+                <p style="text-align:center; font-size:0.8em; color:#64748b; margin-top:5px;">مثال: مربع البحث هو أبسط أنواع النماذج!</p>
             </div>
         </div>
 
-        <div class="concept-box">
-            <h3>3. أنواع الإدخال (Inputs)</h3>
-            <table>
-                <tr>
-                    <th>النوع والشكل</th>
-                    <th>الكود</th>
-                </tr>
-                <tr>
-                    <td>نص عادي <br><input type="text" placeholder="اسمك" style="margin-top:5px;"></td>
-                    <td><code>type="text"</code></td>
-                </tr>
-                <tr>
-                    <td>كلمة مرور <br><input type="password" placeholder="****" style="margin-top:5px;"></td>
-                    <td><code>type="password"</code></td>
-                </tr>
-                <tr>
-                    <td>اختيار (Radio) <br><input type="radio"> خيار</td>
-                    <td><code>type="radio"</code></td>
-                </tr>
-            </table>
+        <div class="concept-card">
+            <h3>⚙️ كيف يعمل النموذج؟ (دورة حياة البيانات)</h3>
+            <div class="svg-container">
+                <svg width="100%" height="200" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2563eb" /></marker>
+                        <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#10b981" /></marker>
+                    </defs>
+                    <line x1="150" y1="100" x2="450" y2="100" stroke="#e2e8f0" stroke-width="4" stroke-dasharray="10 5" />
+                    <g transform="translate(50, 50)">
+                        <rect x="0" y="0" width="100" height="80" rx="10" fill="#3b82f6" stroke="#1d4ed8" stroke-width="2"/>
+                        <rect x="10" y="10" width="80" height="50" rx="2" fill="white"/>
+                        <text x="50" y="100" fill="#1e293b" font-family="Tajawal" font-weight="bold" font-size="14" text-anchor="middle">المستخدم</text>
+                    </g>
+                    <g transform="translate(450, 50)">
+                        <rect x="0" y="0" width="100" height="100" rx="5" fill="#10b981" stroke="#047857" stroke-width="2"/>
+                        <circle cx="85" cy="15" r="4" fill="#34d399"/>
+                        <text x="50" y="120" fill="#1e293b" font-family="Tajawal" font-weight="bold" font-size="14" text-anchor="middle">الخادم</text>
+                    </g>
+                    <path d="M160 80 L440 80" stroke="#2563eb" stroke-width="3" marker-end="url(#arrowhead)" />
+                    <rect x="250" y="60" width="100" height="24" rx="4" fill="#eff6ff" stroke="#2563eb"/>
+                    <text x="300" y="77" fill="#1e40af" font-family="Tajawal" font-size="12" text-anchor="middle" font-weight="bold">1. إرسال البيانات</text>
+                    <path d="M440 130 L160 130" stroke="#10b981" stroke-width="3" marker-end="url(#arrowhead-green)" />
+                    <rect x="250" y="135" width="100" height="24" rx="4" fill="#ecfdf5" stroke="#10b981"/>
+                    <text x="300" y="152" fill="#065f46" font-family="Tajawal" font-size="12" text-anchor="middle" font-weight="bold">3. صفحة الرد</text>
+                </svg>
+            </div>
         </div>
-        <button class="btn" onclick="nextStep(2)">فهمت، لنبدأ التطبيق! 💻</button>
+
+        <h3>🧠 اختبار سريع للمفاهيم:</h3>
+        <div style="background:white; padding:15px; border-radius:10px; border:1px solid #ddd;">
+            <p style="margin-top:0;">ما هي وظيفة الخادم (Server) في عملية النماذج؟</p>
+            <label class="quiz-option"><input type="radio" name="c1" value="wrong"> فقط يعرض شكل الموقع.</label>
+            <label class="quiz-option"><input type="radio" name="c1" value="correct"> يستقبل البيانات، يعالجها، ويحفظها.</label>
+            <div id="feedbackQ1" class="feedback"></div>
+            <button class="btn btn-check" onclick="checkConceptQuiz()">تحقق للإكمال</button>
+        </div>
+        
+        <button class="btn" id="btnToStep2" style="display:none" onclick="nextStep(2)">أحسنتِ! لننتقل للبرمجة 💻</button>
     </div>
 
     <div id="step2" class="station">
-        <h2>المحطة 2: المختبر (مهمة 1 من 3)</h2>
-        <p><strong>المطلوب:</strong> اكتبي كود لإنشاء <u>حقل نصي</u> (Text) لاسم المستخدم.</p>
+        <h2>المحطة 2: بناء هيكل النموذج في HTML</h2>
         
-        <div class="code-input">
-            <textarea id="code1" placeholder='<input type="text">' autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>
-            <button class="btn btn-check" onclick="checkLab('code1', 'prev1', 'feed1', 'ans1', 'text', 1)">تحقق</button>
-            <button class="btn btn-outline" onclick="showAnswer('ans1')" style="font-size:0.9em;">؟ أرني الإجابة الصحيحة</button>
+        <div class="concept-card">
+            <h3>1. الحاوية الأساسية: <code>&lt;form&gt;</code></h3>
+            <p>الخاصية <strong><code>action</code></strong> تحدد "إلى أين ستذهب البيانات؟" (عنوان الخادم).</p>
+            <code>&lt;form action="save.php"&gt; ... &lt;/form&gt;</code>
         </div>
-        
-        <div class="preview-box" id="prev1">النتيجة ستظهر هنا</div>
-        <div id="feed1" class="feedback"></div>
-        <div id="ans1" class="correct-answer-box">الإجابة النموذجية: <code>&lt;input type="text"&gt;</code></div>
-        
-        <button class="btn" id="nextLab1" style="display:none" onclick="nextStep(3)">المهمة التالية ⬅️</button>
+
+        <div class="concept-card">
+            <h3>2. الحقول: <code>&lt;input&gt;</code></h3>
+            <p>نغير شكل الحقل باستخدام الخاصية <strong><code>type</code></strong>:</p>
+            <ul style="list-style:none; padding:0;">
+                <li>🔹 <code>type="text"</code> : نص عادي.</li>
+                <li>🔹 <code>type="password"</code> : كلمة مرور (مخفية).</li>
+                <li>🔹 <code>type="email"</code> : بريد إلكتروني (يتحقق من @).</li>
+                <li>🔹 <code>type="submit"</code> : زر الإرسال.</li>
+            </ul>
+        </div>
+
+        <h3>💻 المختبر: لنطبق ما تعلمنا</h3>
+        <p><strong>المطلوب:</strong> أنشئي حقلاً <u>للبريد الإلكتروني</u> (email)، ثم أنشئي <u>زر إرسال</u> (submit).</p>
+        <div class="code-input">
+            <textarea id="codeLab1" placeholder='<input type="email">
+<input type="submit">' autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>
+            <button class="btn btn-check" onclick="checkLab1()">تحقق من الكود</button>
+        </div>
+        <div id="feedLab1" class="feedback"></div>
+
+        <button class="btn" id="btnToStep3" style="display:none" onclick="nextStep(3)">رائع! التالي ⬅️</button>
     </div>
 
     <div id="step3" class="station">
-        <h2>المحطة 3: المختبر (مهمة 2 من 3)</h2>
-        <p><strong>المطلوب:</strong> نريد حقل <u>كلمة مرور</u> (Password) بحيث تظهر الحروف كنجوم أو نقاط.</p>
+        <h2>المحطة 3: تحسين تجربة المستخدم</h2>
         
-        <div class="code-input">
-            <textarea id="code2" placeholder='<input type="...">' autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>
-            <button class="btn btn-check" onclick="checkLab('code2', 'prev2', 'feed2', 'ans2', 'password', 2)">تحقق</button>
-            <button class="btn btn-outline" onclick="showAnswer('ans2')" style="font-size:0.9em;">؟ أرني الإجابة الصحيحة</button>
+        <div class="concept-card">
+            <h3>1. التلميح الذكي: <code>placeholder</code></h3>
+            <p>نص باهت يظهر <strong>داخل</strong> الحقل ويختفي عند الكتابة.</p>
+            <p>مثال: <code>&lt;input type="text" placeholder="اكتب اسمك هنا"&gt;</code></p>
         </div>
 
-        <div class="preview-box" id="prev2">النتيجة ستظهر هنا</div>
-        <div id="feed2" class="feedback"></div>
-        <div id="ans2" class="correct-answer-box">الإجابة النموذجية: <code>&lt;input type="password"&gt;</code></div>
+        <div class="concept-card">
+            <h3>2. النصوص الطويلة: <code>&lt;textarea&gt;</code></h3>
+            <p>لكتابة ملاحظات أو رسائل طويلة نستخدم <strong><code>&lt;textarea&gt;</code></strong>.</p>
+            <p>⚠️ ملاحظة: له بداية ونهاية: <code>&lt;textarea&gt;&lt;/textarea&gt;</code></p>
+            
+            <div class="svg-container">
+                <svg width="220" height="80" viewBox="0 0 220 80" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="10" y="10" width="200" height="60" rx="5" fill="#fff" stroke="#94a3b8" stroke-width="2"/>
+                    <text x="200" y="30" fill="#cbd5e1" font-family="Tajawal" text-anchor="end" font-size="12">أكتب رسالتك الطويلة هنا...</text>
+                    <line x1="190" y1="55" x2="200" y2="65" stroke="#94a3b8" stroke-width="2"/> 
+                </svg>
+            </div>
+        </div>
 
-        <button class="btn" id="nextLab2" style="display:none" onclick="nextStep(4)">المهمة التالية ⬅️</button>
+        <h3>💻 المختبر (2): التجميل</h3>
+        <p><strong>المطلوب:</strong> أنشئي <code>textarea</code> وأضيفي له سمة <code>placeholder</code> مكتوب فيها "ملاحظاتك".</p>
+        <div class="code-input">
+            <textarea id="codeLabTextarea" placeholder='<textarea placeholder="ملاحظاتك"></textarea>' autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>
+            <button class="btn btn-check" onclick="checkLabTextarea()">تحقق من الكود</button>
+        </div>
+        <div id="feedLabTextarea" class="feedback"></div>
+
+        <button class="btn" id="btnToStep4" style="display:none" onclick="nextStep(4)">التالي: التنظيم ⬅️</button>
     </div>
 
     <div id="step4" class="station">
-        <h2>المحطة 4: المختبر (مهمة 3 من 3)</h2>
-        <p><strong>المطلوب:</strong> نريد زر اختيار دائري (Radio) يستخدم للاختيار من متعدد.</p>
-        
-        <div class="code-input">
-            <textarea id="code3" placeholder='<input type="...">' autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>
-            <button class="btn btn-check" onclick="checkLab('code3', 'prev3', 'feed3', 'ans3', 'radio', 3)">تحقق</button>
-            <button class="btn btn-outline" onclick="showAnswer('ans3')" style="font-size:0.9em;">؟ أرني الإجابة الصحيحة</button>
+        <h2>المحطة 4: تنظيم النموذج</h2>
+        <div class="concept-card">
+            <h3>الترتيب باستخدام Fieldset</h3>
+            <ul>
+                <li><strong><code>&lt;fieldset&gt;</code></strong>: يرسم إطاراً حول العناصر.</li>
+                <li><strong><code>&lt;legend&gt;</code></strong>: يضع عنواناً أنيقاً لهذا الإطار.</li>
+            </ul>
+            
+            <div class="svg-container">
+                <svg width="250" height="100" viewBox="0 0 250 100" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="10" y="20" width="230" height="70" rx="5" fill="none" stroke="#2563eb" stroke-width="2" stroke-dasharray="5 2"/>
+                    <rect x="30" y="10" width="80" height="20" fill="#2563eb" rx="4"/>
+                    <text x="70" y="24" fill="white" font-family="Tajawal" font-size="12" text-anchor="middle">&lt;legend&gt;</text>
+                    <text x="125" y="60" fill="#94a3b8" font-family="Tajawal" font-size="14" text-anchor="middle">هذا الإطار هو &lt;fieldset&gt;</text>
+                </svg>
+            </div>
         </div>
 
-        <div class="preview-box" id="prev3">النتيجة ستظهر هنا</div>
-        <div id="feed3" class="feedback"></div>
-        <div id="ans3" class="correct-answer-box">الإجابة النموذجية: <code>&lt;input type="radio"&gt;</code></div>
+        <h3>💻 المختبر (3): التنظيم</h3>
+        <p><strong>المطلوب:</strong> أنشئي إطار <code>fieldset</code> وبداخله عنوان <code>legend</code> نصه "بياناتي".</p>
+        <div class="code-input">
+            <textarea id="codeLab2" placeholder='<fieldset>
+   <legend>بياناتي</legend>
+</fieldset>' autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>
+            <button class="btn btn-check" onclick="checkLab2()">تحقق من الكود</button>
+        </div>
+        <div id="feedLab2" class="feedback"></div>
 
-        <button class="btn" id="nextLab3" style="display:none" onclick="nextStep(5)">انتقال للعبة الأخطاء 🎮</button>
+        <button class="btn" id="btnToStep5" style="display:none" onclick="nextStep(5)">الاختبار النهائي! 📝</button>
     </div>
 
     <div id="step5" class="station">
-        <h2>المحطة 5: المبرمجة الذكية (1)</h2>
-        <p>كتبت زميلتك هذا الكود، ولكن العنوان لا يظهر كجزء من الإطار. أين الخطأ؟</p>
-        <div style="background:#333; color:#fff; padding:15px; direction:ltr; margin-bottom:15px; border-radius:5px;">
-            &lt;fieldset&gt;<br>
-            &nbsp;&nbsp; &lt;h1&gt; بيانات الطالب &lt;/h1&gt;<br>
-            &lt;/fieldset&gt;
-        </div>
-
-        <div class="quiz-option" onclick="checkDebug(this, false, 1)">
-            <input type="radio" name="d1"> يجب استخدام div بدل fieldset.
-        </div>
-        <div class="quiz-option" onclick="checkDebug(this, true, 1)">
-            <input type="radio" name="d1"> يجب استخدام وسم <code>legend</code> للعنوان داخل الإطار.
-        </div>
-        <div id="debugFeedback1" class="feedback"></div>
-        <button class="btn" id="btnDebugNext1" style="display:none" onclick="nextStep(6)">التحدي التالي</button>
-    </div>
-
-    <div id="step6" class="station">
-        <h2>المحطة 6: المبرمجة الذكية (2)</h2>
-        <p>أرادت الطالبة إنشاء مربع لرسالة طويلة، فكتبت هذا الكود ولم يعمل:</p>
-        <div style="background:#333; color:#fff; padding:15px; direction:ltr; margin-bottom:15px; border-radius:5px;">
-            &lt;input type="textarea"&gt;
-        </div>
-
-        <div class="quiz-option" onclick="checkDebug(this, true, 2)">
-            <input type="radio" name="d2"> الخطأ: الصحيح هو وسم <code>&lt;textarea&gt;</code> وليس input.
-        </div>
-        <div class="quiz-option" onclick="checkDebug(this, false, 2)">
-            <input type="radio" name="d2"> الخطأ إملائي: يجب أن تكون type="text-area".
-        </div>
-        <div id="debugFeedback2" class="feedback"></div>
-        <button class="btn" id="btnDebugNext2" style="display:none" onclick="nextStep(7)">التحدي التالي</button>
-    </div>
-
-    <div id="step7" class="station">
-        <h2>المحطة 7: المبرمجة الذكية (3)</h2>
-        <p>نريد نصاً رمادياً يختفي عند الكتابة (تلميح)، ولكن الكود التالي جعل النص ثابتاً:</p>
-        <div style="background:#333; color:#fff; padding:15px; direction:ltr; margin-bottom:15px; border-radius:5px;">
-            &lt;input type="text" value="اكتب اسمك"&gt;
-        </div>
-
-        <div class="quiz-option" onclick="checkDebug(this, false, 3)">
-            <input type="radio" name="d3"> يجب حذف علامات التنصيص.
-        </div>
-        <div class="quiz-option" onclick="checkDebug(this, true, 3)">
-            <input type="radio" name="d3"> الخطأ في <code>value</code>. السمة الصحيحة هي <code>placeholder</code>.
-        </div>
-        <div id="debugFeedback3" class="feedback"></div>
-        <button class="btn" id="btnDebugNext3" style="display:none" onclick="nextStep(8)">انتقال للاختبار النهائي 📝</button>
-    </div>
-
-    <div id="step8" class="station">
-        <h2>المحطة 8: الاختبار النهائي</h2>
+        <h2>المحطة 5: الاختبار النهائي</h2>
         <form id="finalQuiz">
-            <p>1. لرسم إطار حول العناصر نستخدم:</p>
-            <label class="quiz-option"><input type="radio" name="q1" value="correct"> &lt;fieldset&gt;</label>
-            <label class="quiz-option"><input type="radio" name="q1" value="wrong"> &lt;box&gt;</label>
+            <p>1. لإضافة نص تلميحي يختفي عند الكتابة نستخدم:</p>
+            <label class="quiz-option"><input type="radio" name="q1" value="wrong"> value</label>
+            <label class="quiz-option"><input type="radio" name="q1" value="correct"> placeholder</label>
             
-            <p>2. الوسم الصحيح لاختيار الجنس (ذكر/أنثى):</p>
-            <label class="quiz-option"><input type="radio" name="q3" value="correct"> &lt;input type="radio"&gt;</label>
-            <label class="quiz-option"><input type="radio" name="q3" value="wrong"> &lt;input type="check"&gt;</label>
+            <p>2. لكتابة مقال أو رسالة طويلة نستخدم:</p>
+            <label class="quiz-option"><input type="radio" name="q2" value="wrong"> input type="text"</label>
+            <label class="quiz-option"><input type="radio" name="q2" value="correct"> textarea</label>
 
-            <p>3. لكتابة ملاحظات طويلة نستخدم:</p>
-            <label class="quiz-option"><input type="radio" name="q4" value="wrong"> &lt;input type="text"&gt;</label>
-            <label class="quiz-option"><input type="radio" name="q4" value="correct"> &lt;textarea&gt;</label>
+            <p>3. السمة التي تحدد مكان إرسال البيانات (الخادم):</p>
+            <label class="quiz-option"><input type="radio" name="q3" value="correct"> action</label>
+            <label class="quiz-option"><input type="radio" name="q3" value="wrong"> src</label>
+
+            <p>4. الوسم &lt;legend&gt; يستخدم مع:</p>
+            <label class="quiz-option"><input type="radio" name="q4" value="correct"> &lt;fieldset&gt;</label>
+            <label class="quiz-option"><input type="radio" name="q4" value="wrong"> &lt;textarea&gt;</label>
         </form>
         <button class="btn btn-check" onclick="finishQuiz()">اعتماد النتيجة</button>
     </div>
 
-    <div id="step9" class="station">
-        <h2>🎉 أحسنتِ يا بطلة! 🎉</h2>
-        <p>لقد أتممتِ جميع المهام بنجاح.</p>
-        <p>اكتبي اسمك الثلاثي للشهادة:</p>
-        <input type="text" id="studentName" style="padding: 10px; width: 80%; font-size: 18px; border:1px solid #ccc; border-radius:5px;" placeholder="الاسم هنا...">
+    <div id="step6" class="station">
+        <h2>🎉 مبروك الإنجاز! 🎉</h2>
+        <p>لقد أتممتِ رحلة البيانات بنجاح.</p>
+        <input type="text" id="studentName" style="padding: 10px; width: 80%; font-size: 18px; border:1px solid #ccc; border-radius:5px; margin-bottom:10px;" placeholder="اسمك الثلاثي...">
         <br>
         <button class="btn" onclick="generateCertificate()">إصدار الشهادة</button>
 
         <div id="certificate-view">
-            <div style="border: 2px solid #2e8b57; padding: 20px; border-radius: 10px;">
-                <h1 style="color:#2e8b57; font-size:1.5em;">شهادة إتقان مهارة</h1>
-                <p>تشهد معلمة الحاسب أن المبرمجة المبدعة:</p>
-                <h2 id="certNameDisplay" style="color:#333; border-bottom: 2px solid #eab308; display:inline-block; padding-bottom:5px;"></h2>
-                <p>قد أتمت درس <strong>"إنشاء النماذج HTML"</strong> وتدربت على:</p>
-                <p style="color:#555; font-size: 0.9em; direction:ltr;">(Form Inputs - Radio - Textarea - Troubleshooting)</p>
-                <h3>الدرجة: <span id="finalScoreDisplay" style="color:red;"></span> / 10</h3>
-                <p style="margin-top: 30px; font-size:14px; color:#888;">معلمة المادة: فاطمة الفقيه</p>
+            <div style="border: 4px solid var(--primary-color); padding: 20px; border-radius: 10px; background:white;">
+                <h1 style="color:var(--primary-color);">شهادة مبرمجة نماذج</h1>
+                <p>تشهد معلمة الحاسب أن الطالبة المبدعة:</p>
+                <h2 id="certNameDisplay" style="color:#1e293b; border-bottom: 3px solid var(--accent-color); display:inline-block; padding-bottom:5px;"></h2>
+                <p>قد أتمت درس <strong>"النماذج HTML Forms"</strong> بنجاح وتميز.</p>
+                <div style="margin: 20px 0; border-top:1px dashed #cbd5e1; padding-top:10px;">
+                    <p style="color:#64748b; font-size: 0.9em;">المهارات المكتسبة:</p>
+                    <span style="background:#eff6ff; padding:5px 10px; border-radius:15px; font-size:0.8em; color:#2563eb;">#HTML_Forms</span>
+                    <span style="background:#eff6ff; padding:5px 10px; border-radius:15px; font-size:0.8em; color:#2563eb;">#Textarea</span>
+                    <span style="background:#eff6ff; padding:5px 10px; border-radius:15px; font-size:0.8em; color:#2563eb;">#Client_Server</span>
+                </div>
+                <p style="margin-top: 30px; font-weight:bold;">معلمة المادة: فاطمة الفقيه</p>
             </div>
-            <button class="btn" onclick="window.print()">حفظ الشهادة (PDF)</button>
+            <button class="btn" style="background:#475569; margin-top:10px;" onclick="window.print()">طباعة / حفظ PDF</button>
         </div>
     </div>
 
 </div>
 
 <script>
-    let totalScore = 0;
-    let scores = { lab1:0, lab2:0, lab3:0, dbg1:0, dbg2:0, dbg3:0, quiz:0 };
+    // دالة تنظيف الكود
+    function cleanCode(str) {
+        return str.toLowerCase()
+            .trim()
+            .replace(/[\u2018\u2019]/g, "'") 
+            .replace(/[\u201C\u201D]/g, '"') 
+            .replace(/«/g, '"').replace(/»/g, '"') 
+            .replace(/'/g, '"')
+            .replace(/\s+/g, ' '); 
+    }
 
     function nextStep(step) {
         document.querySelectorAll('.station').forEach(el => el.classList.remove('active'));
         document.getElementById('step' + step).classList.add('active');
-        let percent = (step / 9) * 100;
+        let percent = (step / 6) * 100; // تم التعديل ليكون 6 محطات
         document.getElementById('progressBar').style.width = percent + "%";
         window.scrollTo(0,0);
     }
 
-    // --- دالة تنظيف الكود (الجوهرية لحل مشكلة الجوال) ---
-    function cleanCode(str) {
-        return str.toLowerCase()
-            .trim()
-            .replace(/[\u2018\u2019]/g, "'") // تحويل علامات التنصيص المفردة الذكية
-            .replace(/[\u201C\u201D]/g, '"') // تحويل علامات التنصيص المزدوجة الذكية
-            .replace(/«/g, '"').replace(/»/g, '"') // علامات تنصيص عربية
-            .replace(/'/g, '"')              // توحيد الفاصلة المفردة لتصبح مزدوجة للتسهيل
-            .replace(/\s+/g, ' ');           // إزالة المسافات الزائدة
-    }
-
-    // دالة موحدة للتحقق من المختبر
-    function checkLab(inputId, prevId, feedId, ansId, expectedType, labNum) {
-        let rawCode = document.getElementById(inputId).value;
-        let clean = cleanCode(rawCode);
-        let feedback = document.getElementById(feedId);
+    // المحطة 1: المفاهيم
+    function checkConceptQuiz() {
+        let q1 = document.querySelector('input[name="c1"]:checked');
+        let fb = document.getElementById('feedbackQ1');
         
-        // عرض الكود كما هو في المعاينة
-        document.getElementById(prevId).innerHTML = rawCode;
+        if (!q1) { alert("الرجاء اختيار إجابة"); return; }
 
-        // التحقق المرن
-        // نتأكد من وجود <input و type="expected"
-        // cleanCode قام بتحويل كل العلامات إلى " لذلك نفحص بـ " فقط
-        let isValid = clean.includes('<input') && clean.includes('type="' + expectedType + '"');
-        
-        // تساهل أكثر: إذا كتبت الطالبة بدون علامات تنصيص type=text
-        if(!isValid && clean.includes('<input') && clean.includes('type=' + expectedType)) {
-            isValid = true;
-        }
-
-        if (isValid) {
-            feedback.innerHTML = "✅ كود ممتاز وصحيح!";
-            feedback.className = "feedback success"; 
-            feedback.style.display = 'block';
-            document.getElementById('nextLab' + labNum).style.display = 'inline-block';
-            document.getElementById(ansId).style.display = 'none'; // إخفاء الإجابة إذا أجابت صح
-            
-            let key = 'lab' + labNum;
-            if(scores[key] === 0) { totalScore += 1; scores[key] = 1; }
+        if (q1.value === "correct") {
+            fb.innerHTML = "✅ إجابة صحيحة!";
+            fb.className = "feedback success";
+            fb.style.display = "block";
+            document.getElementById('btnToStep2').style.display = "block";
         } else {
-            feedback.innerHTML = "⚠️ هناك خطأ بسيط، تأكدي من كتابة <code>type=\"" + expectedType + "\"</code>";
-            feedback.className = "feedback error"; 
-            feedback.style.display = 'block';
+            fb.innerHTML = "❌ الخادم وظيفته المعالجة وليس العرض فقط.";
+            fb.className = "feedback error";
+            fb.style.display = "block";
         }
     }
 
-    function showAnswer(elementId) {
-        document.getElementById(elementId).style.display = 'block';
-    }
-
-    // --- دوال التصحيح ---
-    function checkDebug(el, isCorrect, taskNum) {
-        let feedback = document.getElementById('debugFeedback' + taskNum);
-        let btn = document.getElementById('btnDebugNext' + taskNum);
+    // المحطة 2: مختبر HTML
+    function checkLab1() {
+        let code = cleanCode(document.getElementById('codeLab1').value);
+        let fb = document.getElementById('feedLab1');
         
-        // إعادة تعيين الألوان
-        let options = el.parentElement.querySelectorAll('.quiz-option');
-        options.forEach(opt => opt.style.background = '#f9fafb');
+        let hasEmail = code.includes('type="email"') || code.includes('type=email');
+        let hasSubmit = code.includes('type="submit"') || code.includes('type=submit');
 
-        if(isCorrect) {
-            el.style.background = '#d1fae5';
-            feedback.innerHTML = "✅ إجابة صحيحة! أحسنتِ.";
-            feedback.className = "feedback success";
-            feedback.style.display = 'block';
-            btn.style.display = 'inline-block';
-            
-            let key = 'dbg' + taskNum;
-            if(scores[key] === 0) { totalScore += 1; scores[key] = 1; }
+        if (hasEmail && hasSubmit) {
+            fb.innerHTML = "✅ ممتاز! الكود صحيح 100%.";
+            fb.className = "feedback success";
+            fb.style.display = "block";
+            document.getElementById('btnToStep3').style.display = "block";
         } else {
-            el.style.background = '#fee2e2';
-            feedback.innerHTML = "❌ حاولي مرة أخرى.";
-            feedback.className = "feedback error";
-            feedback.style.display = 'block';
+            fb.innerHTML = "⚠️ تأكدي من كتابة <code>type=\"email\"</code> و <code>type=\"submit\"</code>";
+            fb.className = "feedback error";
+            fb.style.display = "block";
         }
     }
 
-    // --- دالة الاختبار ---
+    // المحطة 3: textarea + placeholder
+    function checkLabTextarea() {
+        let code = cleanCode(document.getElementById('codeLabTextarea').value);
+        let fb = document.getElementById('feedLabTextarea');
+        
+        let hasTextarea = code.includes('<textarea') && code.includes('</textarea>');
+        let hasPlaceholder = code.includes('placeholder=');
+
+        if (hasTextarea && hasPlaceholder) {
+            fb.innerHTML = "✅ ممتاز! استخدمتِ textarea و placeholder ببراعة.";
+            fb.className = "feedback success"; 
+            fb.style.display = "block";
+            document.getElementById('btnToStep4').style.display = "block";
+        } else {
+            fb.innerHTML = "⚠️ تأكدي من: <br>1. وسم <code>&lt;textarea&gt;&lt;/textarea&gt;</code> <br>2. خاصية <code>placeholder=\"...\"</code>";
+            fb.className = "feedback error"; 
+            fb.style.display = "block";
+        }
+    }
+
+    // المحطة 4: مختبر التنظيم (مرن باستخدام Regex)
+    function checkLab2() {
+        let rawCode = document.getElementById('codeLab2').value;
+        let code = rawCode.toLowerCase()
+            .replace(/[\u2018\u2019]/g, "'")
+            .replace(/[\u201C\u201D]/g, '"');
+        let fb = document.getElementById('feedLab2');
+        
+        // التحقق الذكي (يتجاهل المسافات الزائدة)
+        let hasFieldset = /<\s*fieldset/i.test(code); 
+        let hasLegend = /<\s*legend/i.test(code);
+
+        if (hasFieldset && hasLegend) {
+            fb.innerHTML = "✅ أحسنتِ! الكود صحيح وتنظيم ممتاز.";
+            fb.className = "feedback success"; 
+            fb.style.display = "block";
+            document.getElementById('btnToStep5').style.display = "block";
+        } else {
+            if (!hasFieldset) fb.innerHTML = "⚠️ لم يتم العثور على الإطار <code>&lt;fieldset&gt;</code>";
+            else fb.innerHTML = "⚠️ الإطار موجود، لكن ينقصنا العنوان <code>&lt;legend&gt;</code>";
+            fb.className = "feedback error"; 
+            fb.style.display = "block";
+        }
+    }
+
+    // المحطة 5: الاختبار
     function finishQuiz() {
         let q1 = document.querySelector('input[name="q1"]:checked')?.value;
+        let q2 = document.querySelector('input[name="q2"]:checked')?.value;
         let q3 = document.querySelector('input[name="q3"]:checked')?.value;
         let q4 = document.querySelector('input[name="q4"]:checked')?.value;
 
-        if (!q1 || !q3 || !q4) { alert("الرجاء حل جميع الأسئلة"); return; }
+        if (!q1 || !q2 || !q3 || !q4) { alert("الرجاء الإجابة على جميع الأسئلة"); return; }
 
-        let quizScore = 0;
-        if(q1 === 'correct') quizScore++;
-        if(q3 === 'correct') quizScore++;
-        if(q4 === 'correct') quizScore++;
-        
-        // تحويل درجة الكويز (3 أسئلة) لتكملة العشرة مع المختبر (3) والأخطاء (3)
-        // المجموع الحالي 6. الكويز يجب أن يكون 4 درجات. 
-        // سنضيف نقطة بونص للحضور :)
-        if(scores.quiz === 0) { totalScore += (quizScore + 1); scores.quiz = quizScore; }
-        
-        nextStep(9);
+        let correctCount = 0;
+        if(q1==='correct') correctCount++;
+        if(q2==='correct') correctCount++;
+        if(q3==='correct') correctCount++;
+        if(q4==='correct') correctCount++;
+
+        if(correctCount >= 3) {
+            nextStep(6);
+        } else {
+            alert("لديك بعض الأخطاء، حاولي التركيز أكثر! درجتك: " + correctCount + "/4");
+        }
     }
 
     function generateCertificate() {
         let name = document.getElementById('studentName').value;
         if(name.trim() === "") { alert("اكتبي اسمك أولاً!"); return; }
         document.getElementById('certNameDisplay').innerText = name;
-        document.getElementById('finalScoreDisplay').innerText = totalScore;
         document.getElementById('certificate-view').style.display = 'block';
-        
-        // تمرير لأسفل لرؤية الشهادة
         setTimeout(() => {
             document.getElementById('certificate-view').scrollIntoView({behavior: "smooth"});
         }, 100);
     }
-
 </script>
 
 </body>
