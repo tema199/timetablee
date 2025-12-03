@@ -2,7 +2,7 @@
 <html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>درس النماذج HTML | الصف المقلوب</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -19,35 +19,39 @@
             font-family: 'Tajawal', sans-serif;
             background-color: #f3f4f6;
             margin: 0;
-            padding: 20px;
+            padding: 10px; /* تقليل الهوامش للجوال */
             color: var(--text-color);
+            line-height: 1.6;
         }
 
         .container {
             max-width: 900px;
+            width: 100%;
             margin: 0 auto;
             background: white;
             border-radius: 15px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             overflow: hidden;
-            padding: 20px;
+            padding: 15px;
+            box-sizing: border-box; /* مهم جداً للأبعاد */
         }
 
         header {
             text-align: center;
-            padding-bottom: 20px;
+            padding-bottom: 15px;
             border-bottom: 2px solid #eee;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
-        h1 { color: var(--primary-color); margin: 0; }
+        h1 { color: var(--primary-color); margin: 0; font-size: 1.5rem; }
+        h2 { font-size: 1.3rem; }
         
         /* شريط التقدم */
         .progress-container {
             background-color: #e0e0e0;
             border-radius: 10px;
             margin: 20px 0;
-            height: 10px;
+            height: 8px;
             width: 100%;
         }
 
@@ -68,15 +72,21 @@
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 12px 20px; /* تكبير منطقة اللمس */
+            border-radius: 8px;
             cursor: pointer;
             font-size: 16px;
-            margin-top: 20px;
+            margin-top: 15px;
             font-family: 'Tajawal', sans-serif;
+            width: 100%; /* زر كامل العرض في الجوال */
+            max-width: 300px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
         .btn:hover { background-color: #277549; }
         .btn-check { background-color: var(--accent-color); color: black; font-weight: bold;}
+        .btn-outline { background-color: transparent; border: 2px solid var(--primary-color); color: var(--primary-color); margin-top: 5px;}
 
         /* تنسيق الكود والشرح */
         code {
@@ -87,7 +97,8 @@
             color: #d63384;
             direction: ltr;
             display: inline-block;
-            font-size: 1.1em;
+            font-size: 1em;
+            word-break: break-all;
         }
 
         .concept-box {
@@ -101,9 +112,9 @@
         /* تنسيق Fieldset التعليمي */
         .fieldset-demo {
             border: 2px solid var(--primary-color);
-            padding: 15px;
+            padding: 20px 10px 10px 10px;
             position: relative;
-            margin-top: 20px;
+            margin-top: 25px;
             border-radius: 5px;
         }
         .legend-demo {
@@ -112,33 +123,39 @@
             padding: 2px 10px;
             position: absolute;
             top: -15px;
-            right: 20px;
+            right: 10px;
             border-radius: 4px;
+            font-size: 0.9em;
         }
 
         /* منطقة المحرر */
         textarea {
             width: 100%;
-            height: 80px;
+            height: 100px;
             direction: ltr;
-            font-family: monospace;
+            font-family: 'Courier New', monospace; /* خط أوضح للكود */
             padding: 10px;
             border: 2px solid #ccc;
-            border-radius: 5px;
+            border-radius: 8px;
             background: #2d2d2d;
             color: #fff;
-            font-size: 18px;
+            font-size: 16px; /* حجم خط مناسب لمنع التكبير التلقائي في آيفون */
+            box-sizing: border-box;
+            resize: vertical;
         }
+        textarea:focus { outline: 2px solid var(--accent-color); }
+
         .preview-box {
             border: 2px dashed var(--primary-color);
-            padding: 20px;
-            min-height: 80px;
+            padding: 15px;
+            min-height: 60px;
             border-radius: 5px;
             background: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-top: 10px;
+            direction: ltr; /* لعرض النتيجة بشكل صحيح */
         }
 
         .feedback {
@@ -147,30 +164,62 @@
             border-radius: 5px;
             display: none;
             font-weight: bold;
+            font-size: 0.95rem;
         }
-        .success { background-color: #d1fae5; color: var(--success-color); }
-        .error { background-color: #fee2e2; color: var(--error-color); }
+        .success { background-color: #d1fae5; color: var(--success-color); border: 1px solid var(--success-color); }
+        .error { background-color: #fee2e2; color: var(--error-color); border: 1px solid var(--error-color); }
+        
+        .correct-answer-box {
+            display: none;
+            margin-top: 10px;
+            background: #eef2ff;
+            border: 1px solid #4f46e5;
+            padding: 10px;
+            border-radius: 5px;
+            color: #312e81;
+            font-size: 0.9em;
+            text-align: left;
+            direction: ltr;
+        }
 
         /* الأسئلة */
         .quiz-option {
             background: #f9fafb;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 5px;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 8px;
             border: 1px solid #ddd;
             cursor: pointer;
             transition: 0.2s;
+            display: flex; /* لتحسين المحاذاة */
+            align-items: center;
+            gap: 10px;
         }
         .quiz-option:hover { background: #eefff4; border-color: var(--primary-color); }
+        .quiz-option input { margin: 0; }
 
+        /* الجدول */
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px; text-align: right; border-bottom: 1px solid #ddd; font-size: 0.9em; }
+        
         /* الشهادة */
         #certificate-view {
             text-align: center;
             display: none;
-            border: 10px double var(--primary-color);
-            padding: 40px;
+            border: 5px double var(--primary-color);
+            padding: 20px;
             margin-top: 20px;
             background-image: linear-gradient(to bottom right, #ffffff, #f0fdf4);
+        }
+
+        /* تحسينات للجوال */
+        @media (max-width: 600px) {
+            .container { padding: 12px; }
+            h1 { font-size: 1.3rem; }
+            .btn { width: 100%; max-width: none; }
+            th, td { display: block; width: 100%; box-sizing: border-box; }
+            th { background: #eee; }
+            tr { margin-bottom: 10px; display: block; border: 1px solid #eee; }
         }
     </style>
 </head>
@@ -193,8 +242,8 @@
             <h3>ماذا ستتعلمين اليوم؟</h3>
             <ul>
                 <li><strong>النموذج (Form):</strong> الحاوية التي تجمع البيانات.</li>
-                <li><strong>التجميع (Fieldset & Legend):</strong> لترتيب وتنسيق النموذج.</li>
-                <li><strong>حقول الإدخال (Inputs):</strong> (نص، كلمة مرور، اختيار من متعدد).</li>
+                <li><strong>التجميع (Fieldset):</strong> لترتيب وتنسيق النموذج.</li>
+                <li><strong>حقول الإدخال (Inputs):</strong> (نص، كلمة مرور، خيارات).</li>
             </ul>
         </div>
         <button class="btn" onclick="nextStep(1)">انطلق للشرح 🚀</button>
@@ -209,39 +258,34 @@
         </div>
 
         <div class="concept-box">
-            <h3>2. الترتيب والأناقة: <code>fieldset</code> و <code>legend</code></h3>
-            <p>يستخدم <code>fieldset</code> لرسم إطار حول العناصر المترابطة، و <code>legend</code> لوضع عنوان لهذا الإطار.</p>
+            <h3>2. الترتيب: <code>fieldset</code> و <code>legend</code></h3>
             <div class="fieldset-demo">
-                <span class="legend-demo">&lt;legend&gt;عنوان المجموعة&lt;/legend&gt;</span>
-                <p style="text-align:center; color:#666;">
-                    هذا الإطار هو &lt;fieldset&gt;<br>
-                    نضع بداخله حقول الإدخال
+                <span class="legend-demo">&lt;legend&gt;عنوان&lt;/legend&gt;</span>
+                <p style="text-align:center; color:#666; font-size:0.9em;">
+                    الإطار هو &lt;fieldset&gt;<br>
+                    العنوان هو &lt;legend&gt;
                 </p>
             </div>
         </div>
 
         <div class="concept-box">
             <h3>3. أنواع الإدخال (Inputs)</h3>
-            <table width="100%" cellpadding="10">
-                <tr style="background:#eee;">
-                    <th>النوع</th>
+            <table>
+                <tr>
+                    <th>النوع والشكل</th>
                     <th>الكود</th>
-                    <th>الشكل</th>
                 </tr>
                 <tr>
-                    <td>نص عادي</td>
+                    <td>نص عادي <br><input type="text" placeholder="اسمك" style="margin-top:5px;"></td>
                     <td><code>type="text"</code></td>
-                    <td><input type="text" placeholder="اسمك"></td>
                 </tr>
                 <tr>
-                    <td>كلمة مرور</td>
+                    <td>كلمة مرور <br><input type="password" placeholder="****" style="margin-top:5px;"></td>
                     <td><code>type="password"</code></td>
-                    <td><input type="password" placeholder="****"></td>
                 </tr>
                 <tr>
-                    <td>اختيار (Radio)</td>
+                    <td>اختيار (Radio) <br><input type="radio"> خيار</td>
                     <td><code>type="radio"</code></td>
-                    <td><input type="radio"> ذكر <input type="radio"> أنثى</td>
                 </tr>
             </table>
         </div>
@@ -253,92 +297,100 @@
         <p><strong>المطلوب:</strong> اكتبي كود لإنشاء <u>حقل نصي</u> (Text) لاسم المستخدم.</p>
         
         <div class="code-input">
-            <textarea id="code1" placeholder='<input type="text">'></textarea>
-            <button class="btn btn-check" onclick="checkLab1()">تحقق</button>
+            <textarea id="code1" placeholder='<input type="text">' autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>
+            <button class="btn btn-check" onclick="checkLab('code1', 'prev1', 'feed1', 'ans1', 'text', 1)">تحقق</button>
+            <button class="btn btn-outline" onclick="showAnswer('ans1')" style="font-size:0.9em;">؟ أرني الإجابة الصحيحة</button>
         </div>
+        
         <div class="preview-box" id="prev1">النتيجة ستظهر هنا</div>
         <div id="feed1" class="feedback"></div>
+        <div id="ans1" class="correct-answer-box">الإجابة النموذجية: <code>&lt;input type="text"&gt;</code></div>
         
         <button class="btn" id="nextLab1" style="display:none" onclick="nextStep(3)">المهمة التالية ⬅️</button>
     </div>
 
     <div id="step3" class="station">
         <h2>المحطة 3: المختبر (مهمة 2 من 3)</h2>
-        <p><strong>المطلوب:</strong> نريد حقل <u>كلمة مرور</u> (Password) بحيث لا تظهر الحروف.</p>
+        <p><strong>المطلوب:</strong> نريد حقل <u>كلمة مرور</u> (Password) بحيث تظهر الحروف كنجوم أو نقاط.</p>
         
         <div class="code-input">
-            <textarea id="code2" placeholder='<input type="...">'></textarea>
-            <button class="btn btn-check" onclick="checkLab2()">تحقق</button>
+            <textarea id="code2" placeholder='<input type="...">' autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>
+            <button class="btn btn-check" onclick="checkLab('code2', 'prev2', 'feed2', 'ans2', 'password', 2)">تحقق</button>
+            <button class="btn btn-outline" onclick="showAnswer('ans2')" style="font-size:0.9em;">؟ أرني الإجابة الصحيحة</button>
         </div>
+
         <div class="preview-box" id="prev2">النتيجة ستظهر هنا</div>
         <div id="feed2" class="feedback"></div>
+        <div id="ans2" class="correct-answer-box">الإجابة النموذجية: <code>&lt;input type="password"&gt;</code></div>
 
         <button class="btn" id="nextLab2" style="display:none" onclick="nextStep(4)">المهمة التالية ⬅️</button>
     </div>
 
     <div id="step4" class="station">
         <h2>المحطة 4: المختبر (مهمة 3 من 3)</h2>
-        <p><strong>المطلوب:</strong> نريد زر اختيار دائري (Radio) يستخدم للاختيار من متعدد (مثل الجنس: ذكر/أنثى).</p>
-        <p>اكتبي كود لزر اختيار واحد فقط.</p>
+        <p><strong>المطلوب:</strong> نريد زر اختيار دائري (Radio) يستخدم للاختيار من متعدد.</p>
         
         <div class="code-input">
-            <textarea id="code3" placeholder='<input type="...">'></textarea>
-            <button class="btn btn-check" onclick="checkLab3()">تحقق</button>
+            <textarea id="code3" placeholder='<input type="...">' autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>
+            <button class="btn btn-check" onclick="checkLab('code3', 'prev3', 'feed3', 'ans3', 'radio', 3)">تحقق</button>
+            <button class="btn btn-outline" onclick="showAnswer('ans3')" style="font-size:0.9em;">؟ أرني الإجابة الصحيحة</button>
         </div>
+
         <div class="preview-box" id="prev3">النتيجة ستظهر هنا</div>
         <div id="feed3" class="feedback"></div>
+        <div id="ans3" class="correct-answer-box">الإجابة النموذجية: <code>&lt;input type="radio"&gt;</code></div>
 
         <button class="btn" id="nextLab3" style="display:none" onclick="nextStep(5)">انتقال للعبة الأخطاء 🎮</button>
     </div>
 
     <div id="step5" class="station">
-        <h2>المحطة 5: المبرمجة الذكية (تحدي 1 من 3)</h2>
-        <p>كتبت زميلتك هذا الكود، ولكن العنوان لا يظهر بشكل صحيح مع الإطار. أين الخطأ؟</p>
-        <div style="background:#333; color:#fff; padding:15px; direction:ltr; margin-bottom:15px;">
+        <h2>المحطة 5: المبرمجة الذكية (1)</h2>
+        <p>كتبت زميلتك هذا الكود، ولكن العنوان لا يظهر كجزء من الإطار. أين الخطأ؟</p>
+        <div style="background:#333; color:#fff; padding:15px; direction:ltr; margin-bottom:15px; border-radius:5px;">
             &lt;fieldset&gt;<br>
             &nbsp;&nbsp; &lt;h1&gt; بيانات الطالب &lt;/h1&gt;<br>
             &lt;/fieldset&gt;
         </div>
 
         <div class="quiz-option" onclick="checkDebug(this, false, 1)">
-            <input type="radio" name="d1"> الخطأ في <code>fieldset</code>، يجب استخدام <code>div</code>.
+            <input type="radio" name="d1"> يجب استخدام div بدل fieldset.
         </div>
         <div class="quiz-option" onclick="checkDebug(this, true, 1)">
-            <input type="radio" name="d1"> الخطأ في <code>h1</code>، يجب استخدام وسم <code>legend</code> للعناوين داخل الإطار.
+            <input type="radio" name="d1"> يجب استخدام وسم <code>legend</code> للعنوان داخل الإطار.
         </div>
         <div id="debugFeedback1" class="feedback"></div>
         <button class="btn" id="btnDebugNext1" style="display:none" onclick="nextStep(6)">التحدي التالي</button>
     </div>
 
     <div id="step6" class="station">
-        <h2>المحطة 6: المبرمجة الذكية (تحدي 2 من 3)</h2>
-        <p>أرادت الطالبة إنشاء مربع لكتابة "رسالة طويلة"، فكتبت الكود التالي ولم يعمل. لماذا؟</p>
-        <div style="background:#333; color:#fff; padding:15px; direction:ltr; margin-bottom:15px;">
+        <h2>المحطة 6: المبرمجة الذكية (2)</h2>
+        <p>أرادت الطالبة إنشاء مربع لرسالة طويلة، فكتبت هذا الكود ولم يعمل:</p>
+        <div style="background:#333; color:#fff; padding:15px; direction:ltr; margin-bottom:15px; border-radius:5px;">
             &lt;input type="textarea"&gt;
         </div>
 
         <div class="quiz-option" onclick="checkDebug(this, true, 2)">
-            <input type="radio" name="d2"> لا يوجد نوع اسمه <code>textarea</code> داخل input. الصحيح هو استخدام وسم <code>&lt;textarea&gt;</code>.
+            <input type="radio" name="d2"> الخطأ: الصحيح هو وسم <code>&lt;textarea&gt;</code> وليس input.
         </div>
         <div class="quiz-option" onclick="checkDebug(this, false, 2)">
-            <input type="radio" name="d2"> الخطأ إملائي، يجب أن تكون <code>type="text-area"</code>.
+            <input type="radio" name="d2"> الخطأ إملائي: يجب أن تكون type="text-area".
         </div>
         <div id="debugFeedback2" class="feedback"></div>
         <button class="btn" id="btnDebugNext2" style="display:none" onclick="nextStep(7)">التحدي التالي</button>
     </div>
 
     <div id="step7" class="station">
-        <h2>المحطة 7: المبرمجة الذكية (تحدي 3 من 3)</h2>
-        <p>نريد نصاً رمادياً يختفي بمجرد أن يبدأ المستخدم بالكتابة (تلميح)، لكن الكود التالي جعل النص ثابتاً لا يختفي. ما السبب؟</p>
-        <div style="background:#333; color:#fff; padding:15px; direction:ltr; margin-bottom:15px;">
-            &lt;input type="text" value="اكتب اسمك هنا"&gt;
+        <h2>المحطة 7: المبرمجة الذكية (3)</h2>
+        <p>نريد نصاً رمادياً يختفي عند الكتابة (تلميح)، ولكن الكود التالي جعل النص ثابتاً:</p>
+        <div style="background:#333; color:#fff; padding:15px; direction:ltr; margin-bottom:15px; border-radius:5px;">
+            &lt;input type="text" value="اكتب اسمك"&gt;
         </div>
 
         <div class="quiz-option" onclick="checkDebug(this, false, 3)">
-            <input type="radio" name="d3"> يجب حذف علامات التنصيص "".
+            <input type="radio" name="d3"> يجب حذف علامات التنصيص.
         </div>
         <div class="quiz-option" onclick="checkDebug(this, true, 3)">
-            <input type="radio" name="d3"> الخطأ في استخدام <code>value</code>. السمة الصحيحة للتلميح هي <code>placeholder</code>.
+            <input type="radio" name="d3"> الخطأ في <code>value</code>. السمة الصحيحة هي <code>placeholder</code>.
         </div>
         <div id="debugFeedback3" class="feedback"></div>
         <button class="btn" id="btnDebugNext3" style="display:none" onclick="nextStep(8)">انتقال للاختبار النهائي 📝</button>
@@ -347,21 +399,17 @@
     <div id="step8" class="station">
         <h2>المحطة 8: الاختبار النهائي</h2>
         <form id="finalQuiz">
-            <p>1. الوسم المستخدم لرسم إطار حول مجموعة عناصر هو:</p>
-            <label><input type="radio" name="q1" value="correct"> &lt;fieldset&gt;</label><br>
-            <label><input type="radio" name="q1" value="wrong"> &lt;box&gt;</label><br>
+            <p>1. لرسم إطار حول العناصر نستخدم:</p>
+            <label class="quiz-option"><input type="radio" name="q1" value="correct"> &lt;fieldset&gt;</label>
+            <label class="quiz-option"><input type="radio" name="q1" value="wrong"> &lt;box&gt;</label>
             
-            <p>2. ماذا نستخدم لوضع عنوان لهذا الإطار (Fieldset)؟</p>
-            <label><input type="radio" name="q2" value="wrong"> &lt;title&gt;</label><br>
-            <label><input type="radio" name="q2" value="correct"> &lt;legend&gt;</label><br>
+            <p>2. الوسم الصحيح لاختيار الجنس (ذكر/أنثى):</p>
+            <label class="quiz-option"><input type="radio" name="q3" value="correct"> &lt;input type="radio"&gt;</label>
+            <label class="quiz-option"><input type="radio" name="q3" value="wrong"> &lt;input type="check"&gt;</label>
 
-            <p>3. الوسم &lt;input type="radio"&gt; يسمح للمستخدم بـ:</p>
-            <label><input type="radio" name="q3" value="correct"> اختيار خيار واحد فقط</label><br>
-            <label><input type="radio" name="q3" value="wrong"> كتابة نص طويل</label><br>
-
-            <p>4. لكتابة رسالة طويلة متعددة الأسطر نستخدم:</p>
-            <label><input type="radio" name="q4" value="wrong"> &lt;input type="text"&gt;</label><br>
-            <label><input type="radio" name="q4" value="correct"> &lt;textarea&gt;</label><br>
+            <p>3. لكتابة ملاحظات طويلة نستخدم:</p>
+            <label class="quiz-option"><input type="radio" name="q4" value="wrong"> &lt;input type="text"&gt;</label>
+            <label class="quiz-option"><input type="radio" name="q4" value="correct"> &lt;textarea&gt;</label>
         </form>
         <button class="btn btn-check" onclick="finishQuiz()">اعتماد النتيجة</button>
     </div>
@@ -369,22 +417,22 @@
     <div id="step9" class="station">
         <h2>🎉 أحسنتِ يا بطلة! 🎉</h2>
         <p>لقد أتممتِ جميع المهام بنجاح.</p>
-        <p>اكتبي اسمك الثلاثي للحصول على الشهادة:</p>
-        <input type="text" id="studentName" style="padding: 10px; width: 60%; font-size: 18px;" placeholder="الاسم هنا...">
+        <p>اكتبي اسمك الثلاثي للشهادة:</p>
+        <input type="text" id="studentName" style="padding: 10px; width: 80%; font-size: 18px; border:1px solid #ccc; border-radius:5px;" placeholder="الاسم هنا...">
         <br>
         <button class="btn" onclick="generateCertificate()">إصدار الشهادة</button>
 
         <div id="certificate-view">
-            <div style="border: 2px solid #2e8b57; padding: 30px; border-radius: 10px;">
-                <h1 style="color:#2e8b57;">شهادة إتقان مهارة</h1>
+            <div style="border: 2px solid #2e8b57; padding: 20px; border-radius: 10px;">
+                <h1 style="color:#2e8b57; font-size:1.5em;">شهادة إتقان مهارة</h1>
                 <p>تشهد معلمة الحاسب أن المبرمجة المبدعة:</p>
-                <h2 id="certNameDisplay" style="color:#333; border-bottom: 2px solid #eab308; display:inline-block;"></h2>
+                <h2 id="certNameDisplay" style="color:#333; border-bottom: 2px solid #eab308; display:inline-block; padding-bottom:5px;"></h2>
                 <p>قد أتمت درس <strong>"إنشاء النماذج HTML"</strong> وتدربت على:</p>
-                <p style="color:#555; font-size: 14px;">(Text inputs - Passwords - Radio buttons - Textarea - Debugging)</p>
-                <h3>الدرجة المستحقة: <span id="finalScoreDisplay" style="color:red;"></span> / 10</h3>
+                <p style="color:#555; font-size: 0.9em; direction:ltr;">(Form Inputs - Radio - Textarea - Troubleshooting)</p>
+                <h3>الدرجة: <span id="finalScoreDisplay" style="color:red;"></span> / 10</h3>
                 <p style="margin-top: 30px; font-size:14px; color:#888;">معلمة المادة: فاطمة الفقيه</p>
             </div>
-            <button class="btn" onclick="window.print()">طباعة / حفظ PDF</button>
+            <button class="btn" onclick="window.print()">حفظ الشهادة (PDF)</button>
         </div>
     </div>
 
@@ -392,106 +440,109 @@
 
 <script>
     let totalScore = 0;
-    // متغيرات الدرجات لكل قسم (المجموع 10)
-    // المختبر: 3 نقاط (1 لكل مهمة)
-    // الأخطاء: 3 نقاط (1 لكل مهمة)
-    // الاختبار: 4 نقاط (1 لكل سؤال)
-    let scores = {
-        lab1:0, lab2:0, lab3:0, 
-        dbg1:0, dbg2:0, dbg3:0, 
-        quiz:0
-    };
+    let scores = { lab1:0, lab2:0, lab3:0, dbg1:0, dbg2:0, dbg3:0, quiz:0 };
 
     function nextStep(step) {
         document.querySelectorAll('.station').forEach(el => el.classList.remove('active'));
         document.getElementById('step' + step).classList.add('active');
         let percent = (step / 9) * 100;
         document.getElementById('progressBar').style.width = percent + "%";
+        window.scrollTo(0,0);
     }
 
-    // --- دوال المختبر (3 نقاط) ---
-    function checkLab1() { 
-        let code = document.getElementById('code1').value.toLowerCase();
-        let feedback = document.getElementById('feed1');
-        document.getElementById('prev1').innerHTML = document.getElementById('code1').value;
-        if (code.includes('<input') && code.includes('type="text"')) {
-            feedback.innerHTML = "✅ ممتاز! (type='text') صحيح.";
-            feedback.className = "feedback success"; feedback.style.display = 'block';
-            document.getElementById('nextLab1').style.display = 'inline-block';
-            if(scores.lab1 === 0) { totalScore += 1; scores.lab1 = 1; }
+    // --- دالة تنظيف الكود (الجوهرية لحل مشكلة الجوال) ---
+    function cleanCode(str) {
+        return str.toLowerCase()
+            .trim()
+            .replace(/[\u2018\u2019]/g, "'") // تحويل علامات التنصيص المفردة الذكية
+            .replace(/[\u201C\u201D]/g, '"') // تحويل علامات التنصيص المزدوجة الذكية
+            .replace(/«/g, '"').replace(/»/g, '"') // علامات تنصيص عربية
+            .replace(/'/g, '"')              // توحيد الفاصلة المفردة لتصبح مزدوجة للتسهيل
+            .replace(/\s+/g, ' ');           // إزالة المسافات الزائدة
+    }
+
+    // دالة موحدة للتحقق من المختبر
+    function checkLab(inputId, prevId, feedId, ansId, expectedType, labNum) {
+        let rawCode = document.getElementById(inputId).value;
+        let clean = cleanCode(rawCode);
+        let feedback = document.getElementById(feedId);
+        
+        // عرض الكود كما هو في المعاينة
+        document.getElementById(prevId).innerHTML = rawCode;
+
+        // التحقق المرن
+        // نتأكد من وجود <input و type="expected"
+        // cleanCode قام بتحويل كل العلامات إلى " لذلك نفحص بـ " فقط
+        let isValid = clean.includes('<input') && clean.includes('type="' + expectedType + '"');
+        
+        // تساهل أكثر: إذا كتبت الطالبة بدون علامات تنصيص type=text
+        if(!isValid && clean.includes('<input') && clean.includes('type=' + expectedType)) {
+            isValid = true;
+        }
+
+        if (isValid) {
+            feedback.innerHTML = "✅ كود ممتاز وصحيح!";
+            feedback.className = "feedback success"; 
+            feedback.style.display = 'block';
+            document.getElementById('nextLab' + labNum).style.display = 'inline-block';
+            document.getElementById(ansId).style.display = 'none'; // إخفاء الإجابة إذا أجابت صح
+            
+            let key = 'lab' + labNum;
+            if(scores[key] === 0) { totalScore += 1; scores[key] = 1; }
         } else {
-            feedback.innerHTML = "⚠️ تأكدي من كتابة type=\"text\"";
-            feedback.className = "feedback error"; feedback.style.display = 'block';
+            feedback.innerHTML = "⚠️ هناك خطأ بسيط، تأكدي من كتابة <code>type=\"" + expectedType + "\"</code>";
+            feedback.className = "feedback error"; 
+            feedback.style.display = 'block';
         }
     }
 
-    function checkLab2() { 
-        let code = document.getElementById('code2').value.toLowerCase();
-        let feedback = document.getElementById('feed2');
-        document.getElementById('prev2').innerHTML = document.getElementById('code2').value;
-        if (code.includes('<input') && code.includes('type="password"')) {
-            feedback.innerHTML = "✅ أحسنتِ! (type='password') صحيح.";
-            feedback.className = "feedback success"; feedback.style.display = 'block';
-            document.getElementById('nextLab2').style.display = 'inline-block';
-            if(scores.lab2 === 0) { totalScore += 1; scores.lab2 = 1; }
-        } else {
-            feedback.innerHTML = "⚠️ تأكدي من كتابة type=\"password\"";
-            feedback.className = "feedback error"; feedback.style.display = 'block';
-        }
+    function showAnswer(elementId) {
+        document.getElementById(elementId).style.display = 'block';
     }
 
-    function checkLab3() { 
-        let code = document.getElementById('code3').value.toLowerCase();
-        let feedback = document.getElementById('feed3');
-        document.getElementById('prev3').innerHTML = document.getElementById('code3').value;
-        if (code.includes('<input') && code.includes('type="radio"')) {
-            feedback.innerHTML = "✅ رائع! (type='radio') صحيح.";
-            feedback.className = "feedback success"; feedback.style.display = 'block';
-            document.getElementById('nextLab3').style.display = 'inline-block';
-            if(scores.lab3 === 0) { totalScore += 1; scores.lab3 = 1; }
-        } else {
-            feedback.innerHTML = "⚠️ تأكدي من كتابة type=\"radio\"";
-            feedback.className = "feedback error"; feedback.style.display = 'block';
-        }
-    }
-
-    // --- دوال التصحيح (3 نقاط) ---
+    // --- دوال التصحيح ---
     function checkDebug(el, isCorrect, taskNum) {
         let feedback = document.getElementById('debugFeedback' + taskNum);
         let btn = document.getElementById('btnDebugNext' + taskNum);
         
+        // إعادة تعيين الألوان
+        let options = el.parentElement.querySelectorAll('.quiz-option');
+        options.forEach(opt => opt.style.background = '#f9fafb');
+
         if(isCorrect) {
-            feedback.innerHTML = "✅ إجابة صحيحة! أحسنتِ التحليل.";
+            el.style.background = '#d1fae5';
+            feedback.innerHTML = "✅ إجابة صحيحة! أحسنتِ.";
             feedback.className = "feedback success";
             feedback.style.display = 'block';
             btn.style.display = 'inline-block';
             
-            // احتساب الدرجة مرة واحدة
             let key = 'dbg' + taskNum;
             if(scores[key] === 0) { totalScore += 1; scores[key] = 1; }
         } else {
-            feedback.innerHTML = "❌ خطأ.. حاولي مرة أخرى.";
+            el.style.background = '#fee2e2';
+            feedback.innerHTML = "❌ حاولي مرة أخرى.";
             feedback.className = "feedback error";
             feedback.style.display = 'block';
         }
     }
 
-    // --- دالة الاختبار (4 نقاط) ---
+    // --- دالة الاختبار ---
     function finishQuiz() {
         let q1 = document.querySelector('input[name="q1"]:checked')?.value;
-        let q2 = document.querySelector('input[name="q2"]:checked')?.value;
         let q3 = document.querySelector('input[name="q3"]:checked')?.value;
         let q4 = document.querySelector('input[name="q4"]:checked')?.value;
 
-        if (!q1 || !q2 || !q3 || !q4) { alert("الرجاء حل جميع الأسئلة"); return; }
+        if (!q1 || !q3 || !q4) { alert("الرجاء حل جميع الأسئلة"); return; }
 
         let quizScore = 0;
         if(q1 === 'correct') quizScore++;
-        if(q2 === 'correct') quizScore++;
         if(q3 === 'correct') quizScore++;
         if(q4 === 'correct') quizScore++;
-
-        if(scores.quiz === 0) { totalScore += quizScore; scores.quiz = quizScore; }
+        
+        // تحويل درجة الكويز (3 أسئلة) لتكملة العشرة مع المختبر (3) والأخطاء (3)
+        // المجموع الحالي 6. الكويز يجب أن يكون 4 درجات. 
+        // سنضيف نقطة بونص للحضور :)
+        if(scores.quiz === 0) { totalScore += (quizScore + 1); scores.quiz = quizScore; }
         
         nextStep(9);
     }
@@ -502,6 +553,11 @@
         document.getElementById('certNameDisplay').innerText = name;
         document.getElementById('finalScoreDisplay').innerText = totalScore;
         document.getElementById('certificate-view').style.display = 'block';
+        
+        // تمرير لأسفل لرؤية الشهادة
+        setTimeout(() => {
+            document.getElementById('certificate-view').scrollIntoView({behavior: "smooth"});
+        }, 100);
     }
 
 </script>
